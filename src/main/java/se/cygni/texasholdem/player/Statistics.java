@@ -54,7 +54,7 @@ public class Statistics {
         }
         combs /= factorial(others);
 
-        System.out.println("Found "+combs);
+//        System.out.println("Found "+combs);
         return combs / total;
     }
 
