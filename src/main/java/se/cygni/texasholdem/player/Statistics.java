@@ -39,30 +39,30 @@ public class Statistics {
      * @param rocks
      * @return Probability of getting exactly so many gems when drawing
      */
-    public static double drawExactly(final double wants, final double draws, double gems, double rocks){
+    public static double drawExactly(final double wants, final double draws, final double gems, final double rocks){
         if(wants >  draws){
             return 0.0;
         }
         final double total = combinations(gems+rocks, draws);
 
-        double combs = 1;
-//        double g = gems;
-        for(int ix=0; ix<wants; ++ix){
-            combs *= gems;
-            --gems;
-        }
-        combs /= factorial(wants);
-
-        final double others = draws - wants;
-//        double r = rocks;
-        for(int ix=0; ix<others; ++ix){
-            combs *= rocks;
-            --rocks;
-        }
-        combs /= factorial(others);
-
-//        System.out.println("Found "+combs);
-        return combs / total;
+//        double combs = 1;
+////        double g = gems;
+//        for(int ix=0; ix<wants; ++ix){
+//            combs *= gems;
+//            --gems;
+//        }
+//        combs /= factorial(wants);
+//
+//        final double others = draws - wants;
+////        double r = rocks;
+//        for(int ix=0; ix<others; ++ix){
+//            combs *= rocks;
+//            --rocks;
+//        }
+//        combs /= factorial(others);
+//
+////        System.out.println("Found "+combs);
+        return combinations(gems, wants) * combinations(rocks, draws-wants) / total;
     }
 
     public static double drawAtLeast(final double wants, final double draws, final double gems, final double rocks){
