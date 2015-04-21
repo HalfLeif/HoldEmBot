@@ -1,9 +1,9 @@
+package se.cygni.texasholdem.player;
+
 import org.junit.Test;
 import se.cygni.texasholdem.game.Card;
 import se.cygni.texasholdem.game.definitions.Rank;
 import se.cygni.texasholdem.game.definitions.Suit;
-import se.cygni.texasholdem.player.Scoring;
-import se.cygni.texasholdem.player.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;
