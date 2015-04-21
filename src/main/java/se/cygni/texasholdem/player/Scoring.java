@@ -1,6 +1,7 @@
 package se.cygni.texasholdem.player;
 
 import se.cygni.texasholdem.game.Card;
+import se.cygni.texasholdem.game.definitions.PokerHand;
 import se.cygni.texasholdem.game.definitions.Rank;
 import se.cygni.texasholdem.game.definitions.Suit;
 
@@ -13,15 +14,44 @@ import java.util.Map;
  */
 public class Scoring {
 
-    public static double probabilities(List<Card> cards){
 //        CurrentPlayState state
 //        List<Card> cards = state.getMyCardsAndCommunityCards();
+    public static double probabilities(List<Card> cards){
         CardCounter counter = countCards(cards);
 
 //        probabilityFlush(cards, counter);
 //        return probability_nOfAKind(4,cards,counter);
 
-        return 0.0;
+        double prob = 0.0;
+
+        for(PokerHand h : PokerHand.values()){
+            switch (h){
+                case FOUR_OF_A_KIND:
+                    prob += probability_nOfAKind(4, cards, counter);
+                    break;
+                case FULL_HOUSE:
+                    prob += probability_fullHouse(cards, counter);
+                    break;
+                case FLUSH:
+                    prob += probabilityFlush(cards, counter);
+                    break;
+                case THREE_OF_A_KIND:
+                    prob += probability_nOfAKind(3, cards, counter);
+                    break;
+                case TWO_PAIRS:
+                    prob += probability_twoPair(cards, counter);
+                    break;
+                case ONE_PAIR:
+                    prob += probability_nOfAKind(2, cards, counter);
+                    break;
+                case NOTHING:
+                    break;
+                default:
+                    System.out.println("Unimplemented hand: "+h.getName());
+            }
+        }
+
+        return prob;
     }
 
     public static double probabilityFlush(List<Card> cards, CardCounter counter){
@@ -56,7 +86,7 @@ public class Scoring {
             if( hasDrawn > n ){
                 return 0.0;
             }
-            prob += Statistics.drawExactly(n - hasDrawn, unknownCards, numInDeck, counter.cardsLeft - numInDeck );
+            prob += Statistics.drawExactly(n - hasDrawn, unknownCards, numInDeck, counter.cardsLeft - numInDeck);
         }
 
         return prob;
