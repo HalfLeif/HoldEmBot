@@ -12,6 +12,10 @@ import java.util.*;
  */
 public class Statistics {
 
+    public static boolean closeEnough(double n){
+        return Math.abs(n) < 1e-10;
+    }
+
     public static double factorial(final double n){
         double result = 1.0;
         for(double ix=2.0; ix<=n; ++ix){
@@ -57,7 +61,6 @@ public class Statistics {
     }
 
     /**
-     *
      * @return Probability-map of getting such a hand. Is a PDF.
      */
     public static Map<PokerHand,Double> priors(){

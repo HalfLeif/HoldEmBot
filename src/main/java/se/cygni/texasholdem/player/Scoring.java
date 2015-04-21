@@ -4,7 +4,6 @@ import se.cygni.texasholdem.game.Card;
 import se.cygni.texasholdem.game.definitions.Rank;
 import se.cygni.texasholdem.game.definitions.Suit;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -14,24 +13,41 @@ import java.util.Map;
  */
 public class Scoring {
 
-    public static void test(){
-        List<Card> cards = new ArrayList<Card>();
-        cards.add(new Card(Rank.ACE, Suit.CLUBS));
-        cards.add(new Card(Rank.KING, Suit.CLUBS));
-//        cards.add(new Card(Rank.SEVEN, Suit.CLUBS));
-//        cards.add(new Card(Rank.FIVE, Suit.DIAMONDS));
-//        cards.add(new Card(Rank.EIGHT, Suit.DIAMONDS));
-
-        System.out.println("Prob of flush: " + probabilityOfFlush(cards));
-    }
-
-    public static double probabilityOfFlush(List<Card> cards){
+    public static double probabilities(List<Card> cards){
+//        CurrentPlayState state
 //        List<Card> cards = state.getMyCardsAndCommunityCards();
-        int unknownCards = 7 - cards.size();
-
         CardCounter counter = countCards(cards);
 
-        double flushProb = 0;
+//        probabilityFlush(cards, counter);
+//        return probability_nOfAKind(4,cards,counter);
+
+        return 0.0;
+    }
+
+    public static double probability_nOfAKind(final int n, final List<Card> cards, final CardCounter counter){
+        int unknownCards = 7 - cards.size();
+
+        double prob = 0.0;
+        for(Rank r : Rank.values()){
+            final double numInDeck = counter.rankMap.get(r);
+            final double hasDrawn = CardCounter.INIT_RANK - numInDeck;
+
+            if( Statistics.closeEnough(hasDrawn - n)){
+                return 1.0;
+            }
+            if( hasDrawn > n ){
+                return 0.0;
+            }
+            prob += Statistics.drawExactly(n - hasDrawn, unknownCards, numInDeck, counter.cardsLeft - numInDeck );
+        }
+
+        return prob;
+    }
+
+    public static double probabilityFlush(List<Card> cards, CardCounter counter){
+        int unknownCards = 7 - cards.size();
+
+        double flushProb = 0.0;
         for(Suit s : Suit.values()){
             double remaining = counter.suitMap.get(s);
             double has = CardCounter.INIT_SUIT - remaining;
@@ -43,7 +59,6 @@ public class Scoring {
             }
             flushProb += Statistics.drawAtLeast(5 - has, unknownCards, remaining, counter.cardsLeft - remaining);
         }
-
         return flushProb;
     }
 

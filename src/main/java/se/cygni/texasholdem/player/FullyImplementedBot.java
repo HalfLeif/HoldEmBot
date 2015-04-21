@@ -64,19 +64,6 @@ public class FullyImplementedBot implements Player {
      */
     public static void main(String... args) {
 
-//        System.out.println(Statistics.run(1000000));
-//        System.out.println(Statistics.drawExactly(1,3,3,8));
-//        System.out.println(Statistics.drawAtLeast(1,3,3,8));
-        Scoring.test();
-
-//        System.out.println(Statistics.combinations(8,3));
-//        System.out.println(Statistics.combinations(11,3));
-//
-//        for(double n=0; n<10; ++n){
-//            System.out.println(n+"!: "+Statistics.factorial(n));
-//        }
-
-
 //        FullyImplementedBot bot = new FullyImplementedBot("poker.cygni.se", 4711);
 //
 //        try {
