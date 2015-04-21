@@ -1,0 +1,20 @@
+mvn compile exec:java -Dexec.mainClass="se.cygni.texasholdem.player.FullyImplementedBot"
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building texas-holdem-java-client 1.1.20
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ texas-holdem-java-client ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ texas-holdem-java-client ---
+[INFO] Compiling 1 source file to /Users/HalfLeif/Documents/Chalmers/texas-holdem-java-client-1.1.20/target/classes
+[INFO] 
+[INFO] >>> exec-maven-plugin:1.2.1:java (default-cli) @ texas-holdem-java-client >>>
+[INFO] 
+[INFO] <<< exec-maven-plugin:1.2.1:java (default-cli) @ texas-holdem-java-client <<<
+[INFO] 
+[INFO] --- exec-maven-plugin:1.2.1:java (default-cli) @ texas-holdem-java-client ---
+make: *** [all] Error 130
