@@ -20,8 +20,15 @@ public class Statistics {
         return result;
     }
 
-    public static double combinations(double n, double k){
-        return (factorial(n)/factorial(k)) / factorial(n-k);
+    /**
+     * Efficient and numerically stable way to compute number of combinations: n over k.
+     */
+    public static double combinations(double n, final double k){
+        double result = 1.0 ;
+        for(double limit = n-k; n > limit; --n){
+            result *= n;
+        }
+        return result / factorial(k);
     }
 
     /**
