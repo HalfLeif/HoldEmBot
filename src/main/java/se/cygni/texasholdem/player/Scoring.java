@@ -1,11 +1,10 @@
 package se.cygni.texasholdem.player;
 
-import se.cygni.texasholdem.client.CurrentPlayState;
 import se.cygni.texasholdem.game.Card;
 import se.cygni.texasholdem.game.definitions.Rank;
 import se.cygni.texasholdem.game.definitions.Suit;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +17,10 @@ public class Scoring {
         public final static double INIT_SUIT = 13.0;
         public final static double INIT_RANK = 4.0;
 
-        private final Map<Rank,Double> rankMap = new HashMap<Rank, Double>(13);
-        private final Map<Suit,Double> suitMap = new HashMap<Suit, Double>(4);
+        private final double[] rankArr = {13,13,13,13};
+
+        private final Map<Rank,Double> rankMap = new EnumMap<Rank, Double>(Rank.class);
+        private final Map<Suit,Double> suitMap = new EnumMap<Suit, Double>(Suit.class);
         private double cardsLeft = 13*4;
 
         public CardCounter(){
@@ -44,8 +45,8 @@ public class Scoring {
         }
     }
 
-    public static double probabilityOfFlush(CurrentPlayState state){
-        List<Card> cards = state.getMyCardsAndCommunityCards();
+    public static double probabilityOfFlush(List<Card> cards){
+//        List<Card> cards = state.getMyCardsAndCommunityCards();
         int unknownCards = 7 - cards.size();
 
         CardCounter counter = countCards(cards);
@@ -60,7 +61,7 @@ public class Scoring {
             if( has + unknownCards < 5){
                 continue;
             }
-            // TODO prob. of finding X or more cards of Suit s out of Y unknown cards
+            flushProb += Statistics.drawAtLeast(5 - has, unknownCards, remaining, counter.cardsLeft - remaining);
         }
 
         return flushProb;

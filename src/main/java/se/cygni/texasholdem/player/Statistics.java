@@ -5,10 +5,7 @@ import se.cygni.texasholdem.game.Deck;
 import se.cygni.texasholdem.game.definitions.PokerHand;
 import se.cygni.texasholdem.game.util.PokerHandUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by HalfLeif on 2015-04-20.
@@ -35,29 +32,30 @@ public class Statistics {
      * @param rocks
      * @return Probability of getting exactly so many gems when drawing
      */
-    public static double drawExactly(final double wants, final double draws, final double gems, final double rocks){
+    public static double drawExactly(final double wants, final double draws, double gems, double rocks){
         if(wants >  draws){
             return 0.0;
         }
+        final double total = combinations(gems+rocks, draws);
 
         double combs = 1;
-        double g = gems;
+//        double g = gems;
         for(int ix=0; ix<wants; ++ix){
-            combs *= g;
-            --g;
+            combs *= gems;
+            --gems;
         }
         combs /= factorial(wants);
 
         final double others = draws - wants;
-        double r = rocks;
+//        double r = rocks;
         for(int ix=0; ix<others; ++ix){
-            combs *= r;
-            --r;
+            combs *= rocks;
+            --rocks;
         }
         combs /= factorial(others);
 
         System.out.println("Found "+combs);
-        return combs / combinations(gems+rocks, draws);
+        return combs / total;
     }
 
     public static double drawAtLeast(final double wants, final double draws, final double gems, final double rocks){
@@ -73,7 +71,7 @@ public class Statistics {
      * @return Probability-map of getting such a hand. Is a PDF.
      */
     public static Map<PokerHand,Double> priors(){
-        Map<PokerHand,Double> map = new HashMap<PokerHand, Double>(11);
+        Map<PokerHand,Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
 
         //map.put(PokerHand.ROYAL_FLUSH, 1.0/(26.0*51*25*49*48*45));
         map.put(PokerHand.ROYAL_FLUSH, 2.85e-10);
@@ -96,7 +94,7 @@ public class Statistics {
      * @return Probability-map of beating a uniform hand.
      */
     public static Map<PokerHand,Double> score(){
-        Map<PokerHand,Double> map = new HashMap<PokerHand, Double>(11);
+        Map<PokerHand,Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
 
         map.put(PokerHand.ROYAL_FLUSH, 1.0);
         map.put(PokerHand.STRAIGHT_FLUSH, 998876.0/1e6);
