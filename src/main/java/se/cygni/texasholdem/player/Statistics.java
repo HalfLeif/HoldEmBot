@@ -45,24 +45,7 @@ public class Statistics {
         }
         final double total = combinations(gems+rocks, draws);
 
-//        double combs = 1;
-////        double g = gems;
-//        for(int ix=0; ix<wants; ++ix){
-//            combs *= gems;
-//            --gems;
-//        }
-//        combs /= factorial(wants);
-//
-//        final double others = draws - wants;
-////        double r = rocks;
-//        for(int ix=0; ix<others; ++ix){
-//            combs *= rocks;
-//            --rocks;
-//        }
-//        combs /= factorial(others);
-//
-////        System.out.println("Found "+combs);
-        return combinations(gems, wants) * combinations(rocks, draws-wants) / total;
+        return combinations(gems, wants) * (combinations(rocks, draws-wants) / total);
     }
 
     public static double drawAtLeast(final double wants, final double draws, final double gems, final double rocks){
