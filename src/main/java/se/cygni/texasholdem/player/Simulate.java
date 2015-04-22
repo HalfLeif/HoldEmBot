@@ -29,7 +29,7 @@ public class Simulate {
     }
 
     public static void main(String[] args){
-        runSimulation(1);
+        runSimulation(10000);
     }
 
     public static void runSimulation(int rounds){
@@ -40,33 +40,57 @@ public class Simulate {
         s.summary();
     }
 
+    /**
+     Played for 10000 rounds.
+     A expected 0.4769477643107426
+     B expected 0.47673514138040457
+
+     A won 0.2833
+     B won 0.2785
+     Tied  0.4382
+     */
     public void summary(){
         System.out.println("Played for "+round+" rounds.");
 
-        int aWon = 0;
-        int bWon = 0;
-        int ties = 0;
+        double aWon = 0;
+        double bWon = 0;
+        double ties = 0;
+
+        double totalA = 0.0;
+        double totalB = 0.0;
         for(int ix=0; ix<round; ++ix){
-            StringBuilder a = new StringBuilder();
-            StringBuilder b = new StringBuilder();
+//            StringBuilder a = new StringBuilder();
+//            StringBuilder b = new StringBuilder();
+            double avgA = 0.0;
+            double avgB = 0.0;
             for(int jx = 0; jx < 3; ++jx){
-                a.append(estimatesA[jx][ix]+", ");
-                b.append(estimatesB[jx][ix] + ", ");
+                avgA += estimatesA[jx][ix];
+                avgB += estimatesB[jx][ix];
+//                a.append(estimatesA[jx][ix]+", ");
+//                b.append(estimatesB[jx][ix] + ", ");
             }
-            System.out.println("A expected "+a);
-            System.out.println("B expected "+b);
+            totalA += avgA/3;
+            totalB += avgB/3;
+//            System.out.println("A expected "+a);
+//            System.out.println("B expected "+b);
 
             if(playerAWon[ix] > 0){
-                System.out.println("A won this time.");
+//                System.out.println("A won this time.");
                 aWon++;
             } else if(playerAWon[ix] < 0) {
-                System.out.println("B won this time.");
+//                System.out.println("B won this time.");
                 bWon++;
             } else {
-                System.out.println("Tied.");
+//                System.out.println("Tied.");
                 ++ties;
             }
         }
+        System.out.println("A expected "+totalA/round);
+        System.out.println("B expected "+totalB/round);
+        System.out.println(" ");
+        System.out.println("A won "+aWon/round);
+        System.out.println("B won "+bWon/round);
+        System.out.println("Tied  "+ties/round);
     }
 
     public void oneRound(){
