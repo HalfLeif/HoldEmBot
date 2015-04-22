@@ -443,12 +443,12 @@ public class FullyImplementedBot implements Player {
             for (final Card card : psd.getHand().getCards()) {
                 formatter.format("%-13s | ", card);
             }
-            sb.append("\n");
+//            sb.append("\n");
         }
 
         log.info(sb.toString());
 
-        log.info("That was round "+this.gameRound);
+        log.info("That was round "+this.gameRound+"\n");
         this.gameRound++;
     }
 
