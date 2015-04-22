@@ -14,6 +14,39 @@ import java.util.Map;
  */
 public class Scoring {
 
+    /**
+     * @return Positive if a is better than b, 0 if ties, negative otherwise.
+     */
+    public static int compareHands(PokerHand a, PokerHand b) {
+        return a.getOrderValue() - b.getOrderValue();
+    }
+
+    public static double chanceOfWinning(List<Card> myCardsAndCommunity, List<Card> community){
+//        final double myChance = Scoring.chanceToWin(playState.getMyCardsAndCommunityCards());
+//        final double theirChance = Scoring.chanceToWin(playState.getCommunityCards());
+        final double myChance = Scoring.chanceToWin(myCardsAndCommunity);
+        final double theirChance = Scoring.chanceToWin(community);
+
+//        System.out.println("My chance of winning "+myChance);
+//        System.out.println("Their chance of winning "+theirChance);
+
+        final double combinedChance = myChance / (myChance + theirChance);
+//        System.out.println("Combined "+combinedChance);
+
+        return combinedChance;
+    }
+
+    public static double chanceToWin(List<Card> cards){
+        Map<PokerHand, Double> probMap = probabilities(cards);
+        Map<PokerHand, Double> scoreMap = Statistics.score();
+
+        double prob = 0.0;
+        for(PokerHand h : PokerHand.values()){
+            prob += probMap.get(h)*scoreMap.get(h);
+        }
+        return prob;
+    }
+
     public static Map<PokerHand, Double> probabilities(List<Card> cards){
         final CardCounter counter = countCards(cards);
         final Map<PokerHand, Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
@@ -55,7 +88,7 @@ public class Scoring {
                 surpassed = true;
             }
         }
-        System.out.println("Total probability: "+probSum+"\n");
+//        System.out.println("Total probability: "+probSum+"\n");
 
         double TEST = 0.0;
         // Normalize the distribution (since is approximation)
@@ -66,9 +99,9 @@ public class Scoring {
             TEST += p;
             map.put(h, p);
 
-            System.out.println("After, "+h.getName()+":\t"+map.get(h));
+//            System.out.println("After, "+h.getName()+":\t"+map.get(h));
         }
-        System.out.println("Sum after normalization: "+TEST);
+//        System.out.println("Sum after normalization: "+TEST);
 
 
         return map;

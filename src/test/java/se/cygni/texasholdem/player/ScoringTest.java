@@ -2,6 +2,7 @@ package se.cygni.texasholdem.player;
 
 import org.junit.Test;
 import se.cygni.texasholdem.game.Card;
+import se.cygni.texasholdem.game.definitions.PokerHand;
 import se.cygni.texasholdem.game.definitions.Rank;
 import se.cygni.texasholdem.game.definitions.Suit;
 
@@ -39,6 +40,12 @@ public class ScoringTest {
     }
 
     @Test
+    public void compareHandsTest(){
+        assert Scoring.compareHands(PokerHand.ROYAL_FLUSH, PokerHand.TWO_PAIRS) > 0;
+        assert Scoring.compareHands(PokerHand.FULL_HOUSE, PokerHand.FULL_HOUSE) == 0;
+    }
+
+    @Test
     public void justRun(){
         List<Card> cards = new ArrayList<Card>();
 //        cards.add(new Card(Rank.ACE, Suit.CLUBS));
@@ -62,6 +69,7 @@ public class ScoringTest {
         Scoring.probabilities(cards);
 
     }
+
 
     @Test
     public void experiment(){

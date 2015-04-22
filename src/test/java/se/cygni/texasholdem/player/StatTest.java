@@ -26,6 +26,16 @@ public class StatTest {
         assert Statistics.closeEnough(Statistics.drawExactly(2, 3, 3, 8) - 24.0 / 165.0);
     }
 
+//    @Test
+//    public void testScore(){
+//        Map<PokerHand, Double> map = Statistics.score();
+//        double sum = 0.0;
+//        for(PokerHand h : PokerHand.values()){
+//            sum += map.get(h);
+//        }
+//        assert Statistics.closeEnough(1.0 - sum);
+//    }
+
     @Test
     public void justRun(){
         List<Card> cards = new ArrayList<Card>();
