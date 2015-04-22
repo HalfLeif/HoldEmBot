@@ -9,9 +9,11 @@ import se.cygni.texasholdem.communication.message.request.ActionRequest;
 import se.cygni.texasholdem.game.*;
 import se.cygni.texasholdem.game.definitions.PlayState;
 import se.cygni.texasholdem.game.definitions.PokerHand;
+import se.cygni.texasholdem.game.definitions.Rank;
 import se.cygni.texasholdem.game.util.PokerHandUtil;
 
 import java.util.Formatter;
+import java.util.List;
 
 /**
  * This is an example Poker bot player, you can use it as
@@ -34,6 +36,7 @@ public class FullyImplementedBot implements Player {
     private final PlayerClient playerClient;
 
     private PlayState currentState = null;
+    private double chance = 0.0;
 
     /**
      * Default constructor for a Java Poker Bot.
@@ -117,12 +120,115 @@ public class FullyImplementedBot implements Player {
         return response;
     }
 
+    private void updateChance(){
+        final CurrentPlayState playState = playerClient.getCurrentPlayState();
+        this.chance = Scoring.chanceOfWinning(playState.getMyCardsAndCommunityCards(), playState.getCommunityCards());
+    }
+
     /**
-     * A helper method that returns this bots idea of the best action.
-     * Note! This is just an example, you need to add your own smartness
-     * to win.
+     * The best action
      */
     private Action getBestAction(ActionRequest request) {
+
+        final ActionsAvailable actionsAvailable = new ActionsAvailable(request);
+        final CurrentPlayState playState = playerClient.getCurrentPlayState();
+
+        if(currentState.equals(PlayState.PRE_FLOP)){
+            List<Card> cards = playState.getMyCards();
+            if(worthKeeping(cards.get(0), cards.get(1))){
+                return keepInGame(actionsAvailable);
+            } else {
+                return justFold(actionsAvailable);
+            }
+        }
+
+        // After PRE_FLOP
+        if(chance < 0.5){
+            return justFold(actionsAvailable);
+        }
+        if(chance < 0.6){
+            return keepInGame(actionsAvailable);
+        }
+        return keepRaising(actionsAvailable);
+    }
+
+    private Action justFold(ActionsAvailable available){
+        final CurrentPlayState playState = playerClient.getCurrentPlayState();
+        StringBuilder s = new StringBuilder();
+        for(Card c : playState.getMyCards()){
+            s.append(c.toShortString()+", ");
+        }
+        log.info("FOLD with "+s);
+        return available.foldAction;
+    }
+
+    private Action keepRaising(ActionsAvailable available){
+        log.info("Bot is quite confident in this!");
+        if(available.raiseAction != null){
+            return available.raiseAction;
+        }
+        if(available.callAction != null){
+            return available.callAction;
+        }
+        return available.allInAction;
+    }
+
+    private Action keepInGame(ActionsAvailable available){
+        log.info("Just stay alive");
+        if(available.checkAction != null){
+            return available.checkAction;
+        }
+        if(available.callAction != null){
+            return available.callAction;
+        }
+        return available.allInAction;
+    }
+
+    private boolean worthKeeping(Card a, Card b){
+        if(a.getRank() == b.getRank()){
+            return true;
+        }
+        if(a.getSuit() == b.getSuit()){
+            return true;
+        }
+        return a.getRank().getOrderValue() > Rank.NINE.getOrderValue() || b.getRank().ordinal() > Rank.NINE.getOrderValue() ;
+    }
+
+    private class ActionsAvailable {
+        private Action callAction = null;
+        private Action checkAction = null;
+        private Action raiseAction = null;
+        private Action foldAction = null;
+        private Action allInAction = null;
+
+        private ActionsAvailable(ActionRequest request){
+            for (final Action action : request.getPossibleActions()) {
+                switch (action.getActionType()) {
+                    case CALL:
+                        callAction = action;
+                        break;
+                    case CHECK:
+                        checkAction = action;
+                        break;
+                    case FOLD:
+                        foldAction = action;
+                        break;
+                    case RAISE:
+                        raiseAction = action;
+                        break;
+                    case ALL_IN:
+                        allInAction = action;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Just an example...
+     */
+    private Action getBestActionExample(ActionRequest request) {
         Action callAction = null;
         Action checkAction = null;
         Action raiseAction = null;
@@ -153,11 +259,6 @@ public class FullyImplementedBot implements Player {
         // The current play state is accessible through this class. It
         // keeps track of basic events and other players.
         CurrentPlayState playState = playerClient.getCurrentPlayState();
-
-        //---------------------------------------------
-
-
-        //---------------------------------------------
 
         // The current BigBlind
         long currentBB = playState.getBigBlind();
@@ -244,6 +345,7 @@ public class FullyImplementedBot implements Player {
     public void onYouHaveBeenDealtACard(final YouHaveBeenDealtACardEvent event) {
 
         log.debug("I, {}, got a card: {}", getName(), event.getCard());
+        updateChance();
     }
 
     @Override
@@ -251,6 +353,7 @@ public class FullyImplementedBot implements Player {
             final CommunityHasBeenDealtACardEvent event) {
 
         log.debug("Community got a card: {}", event.getCard());
+        updateChance();
     }
 
     @Override
