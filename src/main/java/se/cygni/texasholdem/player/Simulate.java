@@ -218,7 +218,7 @@ public class Simulate {
     }
 
     public static class Histogram{
-        private static final int FIELDS = 10;
+        private static final int FIELDS = 20;
 
         private final int[] intervals = new int[FIELDS];
         private final int total;
@@ -243,8 +243,8 @@ public class Simulate {
         public void summarize(){
             System.out.println("\nHistogram:");
             for(int ix = 0; ix<FIELDS; ++ix){
-                double lowBound = ix/10.0;
-                System.out.println("From "+lowBound+": "+intervals[ix]);
+                double lowBound = ix/ (double) FIELDS;
+                System.out.println("From "+lowBound+": \t"+intervals[ix]);
             }
         }
     }
