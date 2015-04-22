@@ -52,11 +52,25 @@ public class ScoringTest {
 //        cards.add(new Card(Rank.FIVE, Suit.CLUBS));
 //        cards.add(new Card(Rank.TEN, Suit.CLUBS));
 
-        double house = Scoring.probability_fullHouse(cards, Scoring.countCards(cards));
-        double twoPair = Scoring.probability_twoPair(cards, Scoring.countCards(cards));
+//        double house = Scoring.probability_fullHouse(cards, Scoring.countCards(cards));
+//        double twoPair = Scoring.probability_twoPair(cards, Scoring.countCards(cards));
 
-        System.out.println("Probability of Full house: "+house);
-        System.out.println("Probability of Two pair: "+twoPair);
+//        System.out.println("Probability of Full house: "+house);
+//        System.out.println("Probability of Two pair: "+twoPair);
 
+//        System.out.println(Scoring.probabilityStraight(cards, Scoring.countCards(cards)));
+
+//        System.out.println(Statistics.atLeastOneOfSeveral(1,4,49));
+        for(int ix=1; ix<=5; ++ix){
+            System.out.println(Statistics.atLeastOneOfSeveral(ix,4,49));
+        }
+
+    }
+
+    @Test
+    public void experiment(){
+        for(Rank r : Rank.values()){
+            System.out.println(r.getName()+": "+r.ordinal());
+        }
     }
 }

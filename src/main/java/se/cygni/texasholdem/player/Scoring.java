@@ -54,6 +54,36 @@ public class Scoring {
         return prob;
     }
 
+    public static double probabilityStraight(List<Card> cards, CardCounter counter) {
+        final int unknownCards = 7 - cards.size();
+
+        boolean[] arr = new boolean[13];
+        for(Card c : cards){
+            arr[c.getRank().ordinal()] = true;
+        }
+
+        double prob = 0.0;
+        int missing = 0;
+        for(int ix = 0; ix<13; ++ix){
+            if(! arr[ix]){
+                ++missing;
+            }
+            if(ix >= 4){
+                double iProb = Statistics.atLeastOneOfSeveral(missing, unknownCards, counter.cardsLeft);
+                System.out.println("Straight prob "+ix + ": " + iProb + ", missing: "+missing);
+//                prob +=
+                if(! arr[ix-4]){
+                    --missing;
+                }
+            }
+//            System.out.println(""+ix+": "+arr[ix]);
+        }
+
+        return prob;
+    }
+
+
+
     public static double probabilityFlush(List<Card> cards, CardCounter counter){
         final int unknownCards = 7 - cards.size();
 

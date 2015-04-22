@@ -61,6 +61,36 @@ public class Statistics {
     }
 
     /**
+     * Assumes each type has not been drawn, ie there are 4 of each left.
+     *
+     * @param types Number of different cards to draw at least one of
+     * @param draws Number of drawing cards left
+     * @param total Number of cards in deck
+     * @return Probability of drawing at least one of each type
+     */
+    public static double atLeastOneOfSeveral(final int types, final double draws, final double total){
+        if(types > draws){
+            return 0.0;
+        }
+        double prob = 0.0;
+        for(int ix = 1; ix <= types; ++ix){
+//            System.out.println("atLeast: "+prob);
+            prob += odd(ix) * combinations(types,ix) * drawExactly(0, draws, 4*ix, total - 4*ix);
+        }
+//        System.out.println("Exactly zero: "+drawExactly(0,draws,4,total-4));
+        return 1.0 - prob;
+//        return prob;
+    }
+
+    public static double odd(int ix){
+        if(ix%2 == 1){
+            return 1.0;
+        } else {
+            return -1.0;
+        }
+    }
+
+    /**
      * @return Probability-map of getting such a hand. Is a PDF.
      */
     public static Map<PokerHand,Double> priors(){
