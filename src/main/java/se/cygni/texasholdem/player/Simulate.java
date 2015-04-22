@@ -48,17 +48,56 @@ public class Simulate {
 
     /**
      Played for 10000 rounds.
-     A expected 0.47742864379156436
-     B expected 0.47446378871298556
+     A expected 0.47505816093448566
+     B expected 0.476388490642104
 
-     A won 0.2905
-     B won 0.2816
-     Tied  0.4279
+     A won 0.2857
+     B won 0.2881
+     Tied  0.4262
 
-     False pos: 880
-     True pos:  4864
-     False neg: 857
-     True neg: 4841
+     False pos: 860
+     True pos: 4880
+     False neg: 858
+     True neg: 4878
+
+
+     Histogram:
+     From 0.0: 0
+     From 0.1: 0
+     From 0.2: 0
+     From 0.3: 0
+     From 0.4: 7294
+     From 0.5: 2706
+     From 0.6: 0
+     From 0.7: 0
+     From 0.8: 0
+     From 0.9: 0
+
+     Histogram:
+     From 0.0: 0
+     From 0.1: 0
+     From 0.2: 0
+     From 0.3: 2559
+     From 0.4: 3028
+     From 0.5: 3880
+     From 0.6: 449
+     From 0.7: 84
+     From 0.8: 0
+     From 0.9: 0
+
+     Histogram:
+     From 0.0: 0
+     From 0.1: 37
+     From 0.2: 1671
+     From 0.3: 2172
+     From 0.4: 1939
+     From 0.5: 3194
+     From 0.6: 777
+     From 0.7: 210
+     From 0.8: 0
+     From 0.9: 0
+
+     Process finished with exit code 0
      */
     public void summary(){
         System.out.println("Played for "+round+" rounds.");
