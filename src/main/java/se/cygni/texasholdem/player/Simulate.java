@@ -113,6 +113,11 @@ public class Simulate {
         System.out.println("True pos: "+truePositive);
         System.out.println("False neg: "+falseNegative);
         System.out.println("True neg: "+trueNegative);
+
+        System.out.println(" ");
+        new Histogram(estimatesA[0]).summarize();
+        new Histogram(estimatesA[1]).summarize();
+        new Histogram(estimatesA[2]).summarize();
     }
 
     private void addStats(boolean won, double exp){
@@ -173,4 +178,35 @@ public class Simulate {
         estimatesB[part][round] = Scoring.chanceOfWinning(playerB, community);
     }
 
+    public static class Histogram{
+        private static final int FIELDS = 10;
+
+        private final int[] intervals = new int[FIELDS];
+        private final int total;
+
+        public Histogram(double[] values){
+            total = values.length;
+
+            for(int ix=0; ix<total; ++ix){
+                int y = intervalOf(values[ix]);
+                intervals[y]++;
+            }
+        }
+
+        private int intervalOf(double d){
+            int big = (int) Math.floor(d*FIELDS);
+            if(big == FIELDS){
+                return FIELDS-1;
+            }
+            return big;
+        }
+
+        public void summarize(){
+            System.out.println("\nHistogram:");
+            for(int ix = 0; ix<FIELDS; ++ix){
+                double lowBound = ix/10.0;
+                System.out.println("From "+lowBound+": "+intervals[ix]);
+            }
+        }
+    }
 }
