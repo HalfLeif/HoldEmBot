@@ -52,7 +52,7 @@ public class FullyImplementedBot implements Player {
     private double chance = 0.0;
     private boolean someoneWentAllIn = false;
     private boolean pleasePrintStrategy = true;
-    private int gameRound = 1;
+    private int gameRound = 0;
 
     /**
      * Default constructor for a Java Poker Bot.
