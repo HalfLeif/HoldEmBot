@@ -21,7 +21,6 @@ public class Scoring {
         for(PokerHand h : PokerHand.values()){
             final double p = probabilityPokerHand(h, cards, counter);
             map.put(h,p);
-//            System.out.println("Probability of "+h.getName()+": "+p);
         }
 
         // Make probabilities (more) disjoint!
@@ -31,12 +30,14 @@ public class Scoring {
         decrement(map, PokerHand.STRAIGHT_FLUSH, map.get(PokerHand.ROYAL_FLUSH));
 
         final double house = map.get(PokerHand.FULL_HOUSE);
-        final double four = map.get(PokerHand.FOUR_OF_A_KIND);
-        final double threeUnion = map.get(PokerHand.THREE_OF_A_KIND);
+//        final double four = map.get(PokerHand.FOUR_OF_A_KIND);
+//        final double threeUnion = map.get(PokerHand.THREE_OF_A_KIND);
 
-        decrement(map, PokerHand.THREE_OF_A_KIND, four+house);
+//        decrement(map, PokerHand.THREE_OF_A_KIND, four+house);
+        decrement(map, PokerHand.THREE_OF_A_KIND, house);
         decrement(map, PokerHand.TWO_PAIRS, house);
-        decrement(map, PokerHand.ONE_PAIR, threeUnion + 2*map.get(PokerHand.TWO_PAIRS));
+//        decrement(map, PokerHand.ONE_PAIR, threeUnion + 2*map.get(PokerHand.TWO_PAIRS));
+        decrement(map, PokerHand.ONE_PAIR, 2*map.get(PokerHand.TWO_PAIRS));
 
         double probSum = 0.0;
         for(PokerHand h : PokerHand.values()){

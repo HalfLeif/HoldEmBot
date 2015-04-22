@@ -42,15 +42,17 @@ public class ScoringTest {
     public void justRun(){
         List<Card> cards = new ArrayList<Card>();
 //        cards.add(new Card(Rank.ACE, Suit.CLUBS));
+
         cards.add(new Card(Rank.ACE, Suit.DIAMONDS));
 
         cards.add(new Card(Rank.KING, Suit.DIAMONDS));
         cards.add(new Card(Rank.QUEEN, Suit.DIAMONDS));
         cards.add(new Card(Rank.JACK, Suit.DIAMONDS));
-//        cards.add(new Card(Rank.TEN, Suit.DIAMONDS));
 
-//        cards.add(new Card(Rank.KING, Suit.HEARTS));
-//        cards.add(new Card(Rank.KING, Suit.CLUBS));
+        cards.add(new Card(Rank.TEN, Suit.DIAMONDS));
+
+        cards.add(new Card(Rank.KING, Suit.HEARTS));
+        cards.add(new Card(Rank.KING, Suit.CLUBS));
 
 //        cards.add(new Card(Rank.EIGHT, Suit.CLUBS));
 //        cards.add(new Card(Rank.FIVE, Suit.CLUBS));
