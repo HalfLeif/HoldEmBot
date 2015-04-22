@@ -157,7 +157,7 @@ public class FullyImplementedBot implements Player {
         }
 
         if(someoneWentAllIn){
-            if(chance > 0.7) {
+            if(chance > 0.72) {
                 log.info("Someone went ALL IN, but I'm still confident!");
                 return stayInGame(actionsAvailable);
             } else {
