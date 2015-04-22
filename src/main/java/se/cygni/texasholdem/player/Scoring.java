@@ -43,12 +43,12 @@ public class Scoring {
             double p = map.get(h);
 
             if(surpassed){
-                System.out.println(h.getName()+" is surpassed!");
+//                System.out.println(h.getName()+" is surpassed!");
                 map.put(h, 0.0);
                 p = 0.0;
             }
 
-            System.out.println("Before, "+h.getName()+":\t"+p);
+//            System.out.println("Before, "+h.getName()+":\t"+p);
             probSum += p;
 
             if(Statistics.closeEnough(p-1.0)){
@@ -76,21 +76,15 @@ public class Scoring {
 
     private static void decrement(Map<PokerHand, Double> map, PokerHand h, double d){
         double p = map.get(h) - d;
-        if(p >= 0.0){
-            map.put(h, p);
-        } else {
-            map.put(h, 0.0);
+        if(p < 0.0){
+            p = 0.0;
         }
-
+        map.put(h, p);
     }
 
 //        CurrentPlayState state
 //        List<Card> cards = state.getMyCardsAndCommunityCards();
     public static double probabilityPokerHand(PokerHand h, List<Card> cards, CardCounter counter){
-//        CardCounter counter = countCards(cards);
-
-//        probabilityFlush(cards, counter);
-//        return probability_nOfAKind(4,cards,counter);
         switch (h){
             case ROYAL_FLUSH:
                 return probabilityRoyalFlush(cards, counter);
@@ -111,9 +105,7 @@ public class Scoring {
             case ONE_PAIR:
                 return probability_nOfAKind(2, cards, counter);
             case HIGH_HAND:
-                // Not really true...
                 return probabilityHighHand(cards, counter);
-//                return 0.0;
             case NOTHING:
                 return 0.0;
             default:
@@ -125,7 +117,7 @@ public class Scoring {
     public static double probabilityRoyalFlush(List<Card> cards, CardCounter counter) {
         final int unknownCards = 7 - cards.size();
 
-        // TODO optimize with matrix instead?
+        // TODO optimize with matrix instead? ie if slow.
         double prob = 0.0;
         for(Suit s : Suit.values()){
             boolean[] arr = new boolean[13];
@@ -141,7 +133,6 @@ public class Scoring {
                     ++missing;
                 }
             }
-//            System.out.println("Suit " + s.getLongName() + " Missing: "+missing);
             if(missing == 0){
                 return 1.0;
             }
@@ -161,7 +152,7 @@ public class Scoring {
                     arr[c.getRank().ordinal()] = true;
                 }
             }
-//            double rProb = 0.0;
+
             int missing = 0;
             for(int ix = 0; ix<13; ++ix){
                 if(! arr[ix]){
@@ -177,7 +168,6 @@ public class Scoring {
                     }
                 }
             }
-//            return prob;
         }
 
         return prob;
