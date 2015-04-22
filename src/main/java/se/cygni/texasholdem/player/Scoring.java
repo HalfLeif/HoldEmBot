@@ -18,16 +18,40 @@ public class Scoring {
         final CardCounter counter = countCards(cards);
         final Map<PokerHand, Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
 
-        double probSum = 0.0;
         for(PokerHand h : PokerHand.values()){
             final double p = probabilityPokerHand(h, cards, counter);
             map.put(h,p);
-            probSum += p;
-            System.out.println("Probability of "+h.getName()+": "+p);
+//            System.out.println("Probability of "+h.getName()+": "+p);
         }
-        System.out.println("Sum of probabilities: "+probSum);
+
+        // Make probabilities (more) disjoint!
+        final double straightFlushUnion = map.get(PokerHand.STRAIGHT_FLUSH);
+        decrement(map, PokerHand.STRAIGHT, straightFlushUnion);
+        decrement(map, PokerHand.FLUSH, straightFlushUnion);
+        decrement(map, PokerHand.STRAIGHT_FLUSH, map.get(PokerHand.ROYAL_FLUSH));
+
+        final double house = map.get(PokerHand.FULL_HOUSE);
+        final double four = map.get(PokerHand.FOUR_OF_A_KIND);
+        final double threeUnion = map.get(PokerHand.THREE_OF_A_KIND);
+
+        decrement(map, PokerHand.THREE_OF_A_KIND, four+house);
+        decrement(map, PokerHand.TWO_PAIRS, house);
+        decrement(map, PokerHand.ONE_PAIR, threeUnion + 2*map.get(PokerHand.TWO_PAIRS));
+
+        double probSum = 0.0;
+        for(PokerHand h : PokerHand.values()){
+            System.out.println("Probability of "+h.getName()+":\t"+map.get(h));
+            probSum += map.get(h);
+        }
+        System.out.println("Total probability: "+probSum);
+
 
         return map;
+    }
+
+    private static void decrement(Map<PokerHand, Double> map, PokerHand h, double d){
+        double p = map.get(h);
+        map.put(h, p-d);
     }
 
 //        CurrentPlayState state
@@ -49,7 +73,7 @@ public class Scoring {
             case FLUSH:
                 return probabilityFlush(cards, counter);
             case STRAIGHT:
-                return probabilityFlush(cards, counter);
+                return probabilityStraight(cards, counter);
             case THREE_OF_A_KIND:
                 return probability_nOfAKind(3, cards, counter);
             case TWO_PAIRS:
