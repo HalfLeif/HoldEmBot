@@ -34,9 +34,8 @@ public class Scoring {
         final double house = map.get(PokerHand.FULL_HOUSE);
         decrement(map, PokerHand.THREE_OF_A_KIND, house);
         decrement(map, PokerHand.TWO_PAIRS, house);
-        decrement(map, PokerHand.ONE_PAIR, 2*map.get(PokerHand.TWO_PAIRS));
-
-
+//        decrement(map, PokerHand.ONE_PAIR, 2*map.get(PokerHand.TWO_PAIRS));
+        decrement(map, PokerHand.ONE_PAIR, map.get(PokerHand.TWO_PAIRS));
 
         double probSum = 0.0;
         boolean surpassed = false;
@@ -44,17 +43,32 @@ public class Scoring {
             double p = map.get(h);
 
             if(surpassed){
+                System.out.println(h.getName()+" is surpassed!");
+                map.put(h, 0.0);
                 p = 0.0;
             }
 
-            System.out.println("Probability of "+h.getName()+":\t"+p);
+            System.out.println("Before, "+h.getName()+":\t"+p);
             probSum += p;
 
             if(Statistics.closeEnough(p-1.0)){
                 surpassed = true;
             }
         }
-        System.out.println("Total probability: "+probSum);
+        System.out.println("Total probability: "+probSum+"\n");
+
+        double TEST = 0.0;
+        // Normalize the distribution (since is approximation)
+        for(PokerHand h : PokerHand.values()){
+//            System.out.println(map.get(h));
+            final double p = map.get(h) / probSum;
+//            System.out.println(p);
+            TEST += p;
+            map.put(h, p);
+
+            System.out.println("After, "+h.getName()+":\t"+map.get(h));
+        }
+        System.out.println("Sum after normalization: "+TEST);
 
 
         return map;
