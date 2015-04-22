@@ -23,6 +23,9 @@ import java.util.List;
  *
  * Second victory!
  * http://poker.cygni.se/showgame/table/125
+ *
+ * Third victory!
+ * http://poker.cygni.se/showgame/table/127
  */
 
 /**
@@ -155,7 +158,7 @@ public class FullyImplementedBot implements Player {
         if(someoneWentAllIn){
             if(chance > 0.7) {
                 log.info("Someone went ALL IN, but I'm still confident!");
-                return keepInGame(actionsAvailable);
+                return stayInGame(actionsAvailable);
             } else {
                 log.info("Someone went ALL IN, but it's not worth the risk.");
                 return justFold(actionsAvailable);
@@ -170,15 +173,15 @@ public class FullyImplementedBot implements Player {
 //            }
 
             if(onlyTwoPlayers){
-                if(worth || chance > 0.5){
-                    return keepInGame(actionsAvailable);
+                if(worth || chance > 0.49){
+                    return stayInGame(actionsAvailable);
                 } else {
                     return justFold(actionsAvailable);
                 }
             }
 
-            if(chance > 0.53 || (worth && chance > 0.485) ){
-                return keepInGame(actionsAvailable);
+            if(chance > 0.52 || (worth && chance > 0.480) ){
+                return stayInGame(actionsAvailable);
             } else {
                 return justFold(actionsAvailable);
             }
@@ -190,7 +193,7 @@ public class FullyImplementedBot implements Player {
                 return justFold(actionsAvailable);
             }
             if(chance < 0.59){
-                return keepInGame(actionsAvailable);
+                return stayInGame(actionsAvailable);
             }
             return keepRaising(actionsAvailable);
         }
@@ -199,18 +202,25 @@ public class FullyImplementedBot implements Player {
             return justFold(actionsAvailable);
         }
         if(chance < 0.60){
-            return keepInGame(actionsAvailable);
+            return stayInGame(actionsAvailable);
         }
         return keepRaising(actionsAvailable);
     }
 
     private Action justFold(ActionsAvailable available){
         final CurrentPlayState playState = playerClient.getCurrentPlayState();
-        StringBuilder s = new StringBuilder();
-        for(Card c : playState.getMyCards()){
-            s.append(c.toShortString()+", ");
+        if(this.pleasePrintStrategy){
+            StringBuilder s = new StringBuilder();
+            for(Card c : playState.getMyCards()){
+                s.append(c.toShortString()+", ");
+            }
+            log.info("Quick exit, got: "+s);
         }
-        log.info("FOLD with "+s);
+
+        if(available.checkAction != null){
+            return available.checkAction;
+        }
+
         return available.foldAction;
     }
 
@@ -236,7 +246,7 @@ public class FullyImplementedBot implements Player {
 
     }
 
-    private Action keepInGame(ActionsAvailable available){
+    private Action stayInGame(ActionsAvailable available){
         if(pleasePrintStrategy){
             log.info("Just stay alive");
             this.pleasePrintStrategy = false;
@@ -248,7 +258,7 @@ public class FullyImplementedBot implements Player {
         if(available.callAction != null){
             return available.callAction;
         }
-        log.info("keepInGame: CAN THIS HAPPEN?");
+        // Can happen when out of resources
         return available.allInAction;
     }
 
