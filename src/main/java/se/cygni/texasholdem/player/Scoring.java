@@ -24,6 +24,8 @@ public class Scoring {
         }
 
         // Make probabilities (more) disjoint!
+        decrement(map, PokerHand.HIGH_HAND, map.get(PokerHand.STRAIGHT));
+
         final double straightFlushUnion = map.get(PokerHand.STRAIGHT_FLUSH);
         decrement(map, PokerHand.STRAIGHT, straightFlushUnion);
         decrement(map, PokerHand.FLUSH, straightFlushUnion);
@@ -51,8 +53,13 @@ public class Scoring {
     }
 
     private static void decrement(Map<PokerHand, Double> map, PokerHand h, double d){
-        double p = map.get(h);
-        map.put(h, p-d);
+        double p = map.get(h) - d;
+        if(p >= 0.0){
+            map.put(h, p);
+        } else {
+            map.put(h, 0.0);
+        }
+
     }
 
 //        CurrentPlayState state
@@ -83,7 +90,8 @@ public class Scoring {
                 return probability_nOfAKind(2, cards, counter);
             case HIGH_HAND:
                 // Not really true...
-                return 0.0;
+                return probabilityHighHand(cards, counter);
+//                return 0.0;
             case NOTHING:
                 return 0.0;
             default:
@@ -196,6 +204,28 @@ public class Scoring {
             flushProb += Statistics.drawAtLeast(5 - has, unknownCards, remaining, counter.cardsLeft - remaining);
         }
         return flushProb;
+    }
+
+    /**
+     * @return Probability of not getting a single pair.
+     */
+    public static double probabilityHighHand(List<Card> cards, CardCounter counter) {
+        final int unknownCards = 7 - cards.size(); // k
+        final int ranksLeft = 13 - cards.size();   // n
+
+        for(Rank r : Rank.values()){
+            if( counter.rankMap.get(r) < CardCounter.INIT_RANK-1 ){
+                // There is a pair already
+                return 0.0;
+            }
+        }
+
+//        double prob = 1.0;
+        return Math.pow(4.0,unknownCards)
+                * Statistics.combinations(ranksLeft, unknownCards)
+                / Statistics.combinations(counter.cardsLeft, unknownCards);
+
+//        return prob;
     }
 
     public static double probability_nOfAKind(final int n, final List<Card> cards, final CardCounter counter){
