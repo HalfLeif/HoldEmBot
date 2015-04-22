@@ -14,48 +14,57 @@ import java.util.Map;
  */
 public class Scoring {
 
+    public static Map<PokerHand, Double> probabilities(List<Card> cards){
+        final CardCounter counter = countCards(cards);
+        final Map<PokerHand, Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
+
+        double probSum = 0.0;
+        for(PokerHand h : PokerHand.values()){
+            final double p = probabilityPokerHand(h, cards, counter);
+            map.put(h,p);
+            probSum += p;
+            System.out.println("Probability of "+h.getName()+": "+p);
+        }
+        System.out.println("Sum of probabilities: "+probSum);
+
+        return map;
+    }
+
 //        CurrentPlayState state
 //        List<Card> cards = state.getMyCardsAndCommunityCards();
-    public static double probabilities(List<Card> cards){
-        CardCounter counter = countCards(cards);
+    public static double probabilityPokerHand(PokerHand h, List<Card> cards, CardCounter counter){
+//        CardCounter counter = countCards(cards);
 
 //        probabilityFlush(cards, counter);
 //        return probability_nOfAKind(4,cards,counter);
-
-        double prob = 0.0;
-
-        for(PokerHand h : PokerHand.values()){
-            switch (h){
-                case FOUR_OF_A_KIND:
-                    prob += probability_nOfAKind(4, cards, counter);
-                    break;
-                case FULL_HOUSE:
-                    prob += probability_fullHouse(cards, counter);
-                    break;
-                case FLUSH:
-                    prob += probabilityFlush(cards, counter);
-                    break;
-                case STRAIGHT:
-                    prob += probabilityFlush(cards, counter);
-                    break;
-                case THREE_OF_A_KIND:
-                    prob += probability_nOfAKind(3, cards, counter);
-                    break;
-                case TWO_PAIRS:
-                    prob += probability_twoPair(cards, counter);
-                    break;
-                case ONE_PAIR:
-                    prob += probability_nOfAKind(2, cards, counter);
-                    break;
-                case NOTHING:
-                    prob += 0.0;
-                    break;
-                default:
-                    System.out.println("Unimplemented hand: "+h.getName());
-            }
+        switch (h){
+            case ROYAL_FLUSH:
+                return probabilityRoyalFlush(cards, counter);
+            case STRAIGHT_FLUSH:
+                return probabilityStraightFlush(cards, counter);
+            case FOUR_OF_A_KIND:
+                return probability_nOfAKind(4, cards, counter);
+            case FULL_HOUSE:
+                return probability_fullHouse(cards, counter);
+            case FLUSH:
+                return probabilityFlush(cards, counter);
+            case STRAIGHT:
+                return probabilityFlush(cards, counter);
+            case THREE_OF_A_KIND:
+                return probability_nOfAKind(3, cards, counter);
+            case TWO_PAIRS:
+                return probability_twoPair(cards, counter);
+            case ONE_PAIR:
+                return probability_nOfAKind(2, cards, counter);
+            case HIGH_HAND:
+                // Not really true...
+                return 0.0;
+            case NOTHING:
+                return 0.0;
+            default:
+                System.out.println("Unimplemented hand: "+h.getName());
+                return 0.0;
         }
-
-        return prob;
     }
 
     public static double probabilityRoyalFlush(List<Card> cards, CardCounter counter) {
@@ -77,7 +86,7 @@ public class Scoring {
                     ++missing;
                 }
             }
-            System.out.println("Suit " + s.getLongName() + " Missing: "+missing);
+//            System.out.println("Suit " + s.getLongName() + " Missing: "+missing);
             if(missing == 0){
                 return 1.0;
             }
