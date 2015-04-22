@@ -135,11 +135,26 @@ public class FullyImplementedBot implements Player {
         final ActionsAvailable actionsAvailable = new ActionsAvailable(request);
         final CurrentPlayState playState = playerClient.getCurrentPlayState();
 
+        final int numPlayers = playState.getNumberOfPlayers();
+        final boolean onlyTwoPlayers = numPlayers < 3;
+
+        if(this.pleasePrintStrategy){
+            log.info("# "+currentState.getName());
+        }
+
         if(currentState.equals(PlayState.PRE_FLOP)){
             List<Card> cards = playState.getMyCards();
             final boolean worth = worthKeeping(cards.get(0), cards.get(1));
-            if(worth && this.pleasePrintStrategy){
-                log.info("Apparently worth keeping? Chance: "+chance);
+//            if(worth && this.pleasePrintStrategy){
+//                log.info("Apparently worth keeping? Chance: "+chance);
+//            }
+
+            if(onlyTwoPlayers){
+                if(worth || chance > 0.5){
+                    return keepInGame(actionsAvailable);
+                } else {
+                    return justFold(actionsAvailable);
+                }
             }
 
             if(chance > 0.53 || (worth && chance > 0.5) ){
@@ -161,6 +176,9 @@ public class FullyImplementedBot implements Player {
 
         if(chance < 0.5){
             return justFold(actionsAvailable);
+        }
+        if(onlyTwoPlayers && chance > 0.56){
+            return keepRaising(actionsAvailable);
         }
         if(chance < 0.6){
             return keepInGame(actionsAvailable);
@@ -411,7 +429,7 @@ public class FullyImplementedBot implements Player {
     @Override
     public void onPlayerForcedFolded(PlayerForcedFoldedEvent event) {
 
-        log.debug("NOT GOOD! {} was forced to fold after putting {} in the pot because exceeding the time limit", event.getPlayer().getName(), event.getInvestmentInPot());
+        log.info("NOT GOOD! {} was forced to fold after putting {} in the pot because exceeding the time limit", event.getPlayer().getName(), event.getInvestmentInPot());
     }
 
     @Override
@@ -436,7 +454,7 @@ public class FullyImplementedBot implements Player {
     @Override
     public void onPlayerWentAllIn(final PlayerWentAllInEvent event) {
         this.someoneWentAllIn = true;
-        log.debug("{} went all in with amount {}", event.getPlayer().getName(), event.getAllInAmount());
+        log.info("{} went all in with amount {}", event.getPlayer().getName(), event.getAllInAmount());
     }
 
     @Override
