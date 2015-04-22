@@ -69,9 +69,12 @@ public class Scoring {
                 ++missing;
             }
             if(ix >= 4){
-                double iProb = Statistics.atLeastOneOfSeveral(missing, unknownCards, counter.cardsLeft);
-                System.out.println("Straight prob "+ix + ": " + iProb + ", missing: "+missing);
-//                prob +=
+                if(missing == 0){
+                    return 1.0;
+                }
+//                double iProb = Statistics.atLeastOneOfSeveral(missing, unknownCards, counter.cardsLeft);
+//                System.out.println("Straight prob "+ix + ": " + iProb + ", missing: "+missing);
+                prob += Statistics.atLeastOneOfSeveral(missing, unknownCards, counter.cardsLeft);
                 if(! arr[ix-4]){
                     --missing;
                 }

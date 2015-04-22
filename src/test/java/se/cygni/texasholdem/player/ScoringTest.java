@@ -41,10 +41,13 @@ public class ScoringTest {
     @Test
     public void justRun(){
         List<Card> cards = new ArrayList<Card>();
-        cards.add(new Card(Rank.ACE, Suit.CLUBS));
+//        cards.add(new Card(Rank.ACE, Suit.CLUBS));
         cards.add(new Card(Rank.ACE, Suit.HEARTS));
 
         cards.add(new Card(Rank.KING, Suit.DIAMONDS));
+        cards.add(new Card(Rank.QUEEN, Suit.DIAMONDS));
+//        cards.add(new Card(Rank.JACK, Suit.DIAMONDS));
+
 //        cards.add(new Card(Rank.KING, Suit.HEARTS));
 //        cards.add(new Card(Rank.KING, Suit.CLUBS));
 
@@ -58,12 +61,12 @@ public class ScoringTest {
 //        System.out.println("Probability of Full house: "+house);
 //        System.out.println("Probability of Two pair: "+twoPair);
 
-//        System.out.println(Scoring.probabilityStraight(cards, Scoring.countCards(cards)));
+        System.out.println(Scoring.probabilityStraight(cards, Scoring.countCards(cards)));
 
 //        System.out.println(Statistics.atLeastOneOfSeveral(1,4,49));
-        for(int ix=1; ix<=5; ++ix){
-            System.out.println(Statistics.atLeastOneOfSeveral(ix,4,49));
-        }
+//        for(int ix=1; ix<=5; ++ix){
+//            System.out.println(Statistics.atLeastOneOfSeveral(ix,4,49));
+//        }
 
     }
 
