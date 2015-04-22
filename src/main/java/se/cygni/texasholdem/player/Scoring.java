@@ -35,6 +35,9 @@ public class Scoring {
                 case FLUSH:
                     prob += probabilityFlush(cards, counter);
                     break;
+                case STRAIGHT:
+                    prob += probabilityFlush(cards, counter);
+                    break;
                 case THREE_OF_A_KIND:
                     prob += probability_nOfAKind(3, cards, counter);
                     break;
@@ -45,10 +48,72 @@ public class Scoring {
                     prob += probability_nOfAKind(2, cards, counter);
                     break;
                 case NOTHING:
+                    prob += 0.0;
                     break;
                 default:
                     System.out.println("Unimplemented hand: "+h.getName());
             }
+        }
+
+        return prob;
+    }
+
+    public static double probabilityRoyalFlush(List<Card> cards, CardCounter counter) {
+        final int unknownCards = 7 - cards.size();
+
+        // TODO optimize with matrix instead?
+        double prob = 0.0;
+        for(Suit s : Suit.values()){
+            boolean[] arr = new boolean[13];
+            for(Card c : cards){
+                if(c.getSuit().equals(s)){
+                    arr[c.getRank().ordinal()] = true;
+                }
+            }
+
+            int missing = 0;
+            for(int ix = 8; ix<13; ++ix){
+                if(! arr[ix]){
+                    ++missing;
+                }
+            }
+            System.out.println("Suit " + s.getLongName() + " Missing: "+missing);
+            if(missing == 0){
+                return 1.0;
+            }
+            prob += Statistics.atLeastOneOfSeveral(1, missing, unknownCards, counter.cardsLeft);
+        }
+        return prob;
+    }
+
+    public static double probabilityStraightFlush(List<Card> cards, CardCounter counter) {
+        final int unknownCards = 7 - cards.size();
+
+        double prob = 0.0;
+        for(Rank r : Rank.values()){
+            boolean[] arr = new boolean[13];
+            for(Card c : cards){
+                if(c.getRank().equals(r)){
+                    arr[c.getRank().ordinal()] = true;
+                }
+            }
+//            double rProb = 0.0;
+            int missing = 0;
+            for(int ix = 0; ix<13; ++ix){
+                if(! arr[ix]){
+                    ++missing;
+                }
+                if(ix >= 4){
+                    if(missing == 0){
+                        return 1.0;
+                    }
+                    prob += Statistics.atLeastOneOfSeveral(1, missing, unknownCards, counter.cardsLeft);
+                    if(! arr[ix-4]){
+                        --missing;
+                    }
+                }
+            }
+//            return prob;
         }
 
         return prob;
@@ -72,20 +137,14 @@ public class Scoring {
                 if(missing == 0){
                     return 1.0;
                 }
-//                double iProb = Statistics.atLeastOneOfSeveral(missing, unknownCards, counter.cardsLeft);
-//                System.out.println("Straight prob "+ix + ": " + iProb + ", missing: "+missing);
-                prob += Statistics.atLeastOneOfSeveral(missing, unknownCards, counter.cardsLeft);
+                prob += Statistics.atLeastOneOfSeveral(4, missing, unknownCards, counter.cardsLeft);
                 if(! arr[ix-4]){
                     --missing;
                 }
             }
-//            System.out.println(""+ix+": "+arr[ix]);
         }
-
         return prob;
     }
-
-
 
     public static double probabilityFlush(List<Card> cards, CardCounter counter){
         final int unknownCards = 7 - cards.size();
