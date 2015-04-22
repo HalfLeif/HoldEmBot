@@ -52,6 +52,7 @@ public class FullyImplementedBot implements Player {
     private double chance = 0.0;
     private boolean someoneWentAllIn = false;
     private boolean pleasePrintStrategy = true;
+    private int gameRound = 1;
 
     /**
      * Default constructor for a Java Poker Bot.
@@ -242,6 +243,7 @@ public class FullyImplementedBot implements Player {
         if(available.checkAction != null){
             return available.checkAction;
         }
+        log.info("keepRaising: THIS SHOULD NEVER HAPPEN?");
         return available.foldAction;
 
     }
@@ -445,6 +447,9 @@ public class FullyImplementedBot implements Player {
         }
 
         log.info(sb.toString());
+
+        log.info("That was round "+this.gameRound);
+        this.gameRound++;
     }
 
     @Override
