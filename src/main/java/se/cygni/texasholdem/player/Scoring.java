@@ -99,10 +99,10 @@ public class Scoring {
         final int unknownCards = 7 - cards.size();
 
         double prob = 0.0;
-        for(Rank r : Rank.values()){
+        for(Suit s : Suit.values()){
             boolean[] arr = new boolean[13];
             for(Card c : cards){
-                if(c.getRank().equals(r)){
+                if(c.getSuit().equals(s)){
                     arr[c.getRank().ordinal()] = true;
                 }
             }
