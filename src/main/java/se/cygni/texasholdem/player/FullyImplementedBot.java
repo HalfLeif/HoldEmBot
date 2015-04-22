@@ -37,6 +37,8 @@ public class FullyImplementedBot implements Player {
 
     private PlayState currentState = null;
     private double chance = 0.0;
+    private boolean someoneWentAllIn = false;
+    private boolean pleasePrintStrategy = true;
 
     /**
      * Default constructor for a Java Poker Bot.
@@ -135,7 +137,12 @@ public class FullyImplementedBot implements Player {
 
         if(currentState.equals(PlayState.PRE_FLOP)){
             List<Card> cards = playState.getMyCards();
-            if(worthKeeping(cards.get(0), cards.get(1))){
+            final boolean worth = worthKeeping(cards.get(0), cards.get(1));
+            if(worth && this.pleasePrintStrategy){
+                log.info("Apparently worth keeping? Chance: "+chance);
+            }
+
+            if(chance > 0.53 || (worth && chance > 0.5) ){
                 return keepInGame(actionsAvailable);
             } else {
                 return justFold(actionsAvailable);
@@ -143,6 +150,15 @@ public class FullyImplementedBot implements Player {
         }
 
         // After PRE_FLOP
+        if(someoneWentAllIn){
+            if(chance > 0.7) {
+                log.info("Someone went ALL IN, but I'm still confident!");
+                return keepInGame(actionsAvailable);
+            } else {
+                return justFold(actionsAvailable);
+            }
+        }
+
         if(chance < 0.5){
             return justFold(actionsAvailable);
         }
@@ -163,18 +179,33 @@ public class FullyImplementedBot implements Player {
     }
 
     private Action keepRaising(ActionsAvailable available){
-        log.info("Bot is quite confident in this!");
+        if(pleasePrintStrategy){
+            log.info("Bot is quite confident in this!");
+            this.pleasePrintStrategy = false;
+        }
+
         if(available.raiseAction != null){
             return available.raiseAction;
         }
         if(available.callAction != null){
             return available.callAction;
         }
-        return available.allInAction;
+        if(chance > 0.74){
+            return available.allInAction;
+        }
+        if(available.checkAction != null){
+            return available.checkAction;
+        }
+        return available.foldAction;
+
     }
 
     private Action keepInGame(ActionsAvailable available){
-        log.info("Just stay alive");
+        if(pleasePrintStrategy){
+            log.info("Just stay alive");
+            this.pleasePrintStrategy = false;
+        }
+
         if(available.checkAction != null){
             return available.checkAction;
         }
@@ -338,6 +369,9 @@ public class FullyImplementedBot implements Player {
     @Override
     public void onTableChangedStateEvent(TableChangedStateEvent event) {
         this.currentState = event.getState();
+        this.someoneWentAllIn = false;
+        this.pleasePrintStrategy = true;
+
         log.debug("Table changed state: {}", event.getState());
     }
 
@@ -401,7 +435,7 @@ public class FullyImplementedBot implements Player {
 
     @Override
     public void onPlayerWentAllIn(final PlayerWentAllInEvent event) {
-
+        this.someoneWentAllIn = true;
         log.debug("{} went all in with amount {}", event.getPlayer().getName(), event.getAllInAmount());
     }
 

@@ -218,7 +218,7 @@ public class Simulate {
     }
 
     public static class Histogram{
-        private static final int FIELDS = 20;
+        private static final int FIELDS = 50;
 
         private final int[] intervals = new int[FIELDS];
         private final int total;
