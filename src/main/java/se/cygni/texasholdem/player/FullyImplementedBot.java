@@ -16,11 +16,6 @@ import java.util.Formatter;
 /**
  * This is an example Poker bot player, you can use it as
  * a starting point when creating your own.
- * <p/>
- * If you choose to create your own class don't forget that
- * it must implement the interface Player
- *
- * @see Player
  *      <p/>
  *      Javadocs for common utilities and classes used may be
  *      found here:
@@ -37,6 +32,8 @@ public class FullyImplementedBot implements Player {
     private final String serverHost;
     private final int serverPort;
     private final PlayerClient playerClient;
+
+    private PlayState currentState = null;
 
     /**
      * Default constructor for a Java Poker Bot.
@@ -64,15 +61,15 @@ public class FullyImplementedBot implements Player {
      */
     public static void main(String... args) {
 
-//        FullyImplementedBot bot = new FullyImplementedBot("poker.cygni.se", 4711);
-//
-//        try {
-//            bot.playATrainingGame();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.exit(1);
-//        }
+        FullyImplementedBot bot = new FullyImplementedBot("poker.cygni.se", 4711);
+
+        try {
+            bot.playATrainingGame();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -83,7 +80,6 @@ public class FullyImplementedBot implements Player {
      */
     @Override
     public String getName() {
-        //throw new RuntimeException("Did you forget to specify a name for your bot (hint: your email address is a good idea)?");
         return "HalfLeif";
     }
 
@@ -125,10 +121,6 @@ public class FullyImplementedBot implements Player {
      * A helper method that returns this bots idea of the best action.
      * Note! This is just an example, you need to add your own smartness
      * to win.
-     *
-     * @param request
-     *
-     * @return
      */
     private Action getBestAction(ActionRequest request) {
         Action callAction = null;
@@ -214,9 +206,6 @@ public class FullyImplementedBot implements Player {
     /**
      * Compares two pokerhands.
      *
-     * @param myPokerHand
-     * @param otherPokerHand
-     *
      * @return TRUE if myPokerHand is valued higher than otherPokerHand
      */
     private boolean isHandBetterThan(PokerHand myPokerHand, PokerHand otherPokerHand) {
@@ -247,7 +236,7 @@ public class FullyImplementedBot implements Player {
 
     @Override
     public void onTableChangedStateEvent(TableChangedStateEvent event) {
-
+        this.currentState = event.getState();
         log.debug("Table changed state: {}", event.getState());
     }
 
