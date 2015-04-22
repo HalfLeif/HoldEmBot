@@ -149,6 +149,16 @@ public class FullyImplementedBot implements Player {
             log.info("# "+currentState.getName());
         }
 
+        if(someoneWentAllIn){
+            if(chance > 0.7) {
+                log.info("Someone went ALL IN, but I'm still confident!");
+                return keepInGame(actionsAvailable);
+            } else {
+                log.info("Someone went ALL IN, but it's not worth the risk.");
+                return justFold(actionsAvailable);
+            }
+        }
+
         if(currentState.equals(PlayState.PRE_FLOP)){
             List<Card> cards = playState.getMyCards();
             final boolean worth = worthKeeping(cards.get(0), cards.get(1));
@@ -164,7 +174,7 @@ public class FullyImplementedBot implements Player {
                 }
             }
 
-            if(chance > 0.53 || (worth && chance > 0.5) ){
+            if(chance > 0.53 || (worth && chance > 0.485) ){
                 return keepInGame(actionsAvailable);
             } else {
                 return justFold(actionsAvailable);
@@ -172,20 +182,18 @@ public class FullyImplementedBot implements Player {
         }
 
         // After PRE_FLOP
-        if(someoneWentAllIn){
-            if(chance > 0.7) {
-                log.info("Someone went ALL IN, but I'm still confident!");
-                return keepInGame(actionsAvailable);
-            } else {
+        if(onlyTwoPlayers){
+            if(chance < 0.48){
                 return justFold(actionsAvailable);
             }
+            if(chance < 0.56){
+                return keepInGame(actionsAvailable);
+            }
+            return keepRaising(actionsAvailable);
         }
 
         if(chance < 0.5){
             return justFold(actionsAvailable);
-        }
-        if(onlyTwoPlayers && chance > 0.56){
-            return keepRaising(actionsAvailable);
         }
         if(chance < 0.6){
             return keepInGame(actionsAvailable);
@@ -237,6 +245,7 @@ public class FullyImplementedBot implements Player {
         if(available.callAction != null){
             return available.callAction;
         }
+        log.info("keepInGame: CAN THIS HAPPEN?");
         return available.allInAction;
     }
 
