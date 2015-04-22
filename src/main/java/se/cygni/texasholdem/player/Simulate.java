@@ -18,6 +18,12 @@ public class Simulate {
 
     private int round = 0;
 
+    private int falsePositive = 0;
+    private int falseNegative = 0;
+    private int truePositive = 0;
+    private int trueNegative = 0;
+
+
     private final double[][] estimatesA;
     private final double[][] estimatesB;
     private final int[] playerAWon;
@@ -42,12 +48,17 @@ public class Simulate {
 
     /**
      Played for 10000 rounds.
-     A expected 0.4769477643107426
-     B expected 0.47673514138040457
+     A expected 0.47742864379156436
+     B expected 0.47446378871298556
 
-     A won 0.2833
-     B won 0.2785
-     Tied  0.4382
+     A won 0.2905
+     B won 0.2816
+     Tied  0.4279
+
+     False pos: 880
+     True pos:  4864
+     False neg: 857
+     True neg: 4841
      */
     public void summary(){
         System.out.println("Played for "+round+" rounds.");
@@ -69,15 +80,21 @@ public class Simulate {
 //                a.append(estimatesA[jx][ix]+", ");
 //                b.append(estimatesB[jx][ix] + ", ");
             }
-            totalA += avgA/3;
-            totalB += avgB/3;
+            avgA /= 3;
+            avgB /= 3;
+            totalA += avgA;
+            totalB += avgB;
 //            System.out.println("A expected "+a);
 //            System.out.println("B expected "+b);
 
             if(playerAWon[ix] > 0){
 //                System.out.println("A won this time.");
+                addStats(true, avgA);
+                addStats(false, avgB);
                 aWon++;
             } else if(playerAWon[ix] < 0) {
+                addStats(false, avgA);
+                addStats(true, avgB);
 //                System.out.println("B won this time.");
                 bWon++;
             } else {
@@ -91,6 +108,27 @@ public class Simulate {
         System.out.println("A won "+aWon/round);
         System.out.println("B won "+bWon/round);
         System.out.println("Tied  "+ties/round);
+        System.out.println(" ");
+        System.out.println("False pos: "+falsePositive);
+        System.out.println("True pos: "+truePositive);
+        System.out.println("False neg: "+falseNegative);
+        System.out.println("True neg: "+trueNegative);
+    }
+
+    private void addStats(boolean won, double exp){
+        if(exp >= 0.5){
+            if(won){
+                truePositive++;
+            } else {
+                falsePositive++;
+            }
+        } else {
+            if(won){
+                falseNegative++;
+            } else {
+                trueNegative++;
+            }
+        }
     }
 
     public void oneRound(){
