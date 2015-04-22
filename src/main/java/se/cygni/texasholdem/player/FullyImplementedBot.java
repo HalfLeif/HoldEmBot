@@ -20,6 +20,9 @@ import java.util.List;
 /*
  * First victory!
  * http://poker.cygni.se/showgame/table/118
+ *
+ * Second victory!
+ * http://poker.cygni.se/showgame/table/125
  */
 
 /**
@@ -183,19 +186,19 @@ public class FullyImplementedBot implements Player {
 
         // After PRE_FLOP
         if(onlyTwoPlayers){
-            if(chance < 0.48){
+            if(chance < 0.44){
                 return justFold(actionsAvailable);
             }
-            if(chance < 0.56){
+            if(chance < 0.59){
                 return keepInGame(actionsAvailable);
             }
             return keepRaising(actionsAvailable);
         }
 
-        if(chance < 0.5){
+        if(chance < 0.48){
             return justFold(actionsAvailable);
         }
-        if(chance < 0.6){
+        if(chance < 0.60){
             return keepInGame(actionsAvailable);
         }
         return keepRaising(actionsAvailable);
