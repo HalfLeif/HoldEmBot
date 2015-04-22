@@ -32,19 +32,27 @@ public class Scoring {
         decrement(map, PokerHand.STRAIGHT_FLUSH, map.get(PokerHand.ROYAL_FLUSH));
 
         final double house = map.get(PokerHand.FULL_HOUSE);
-//        final double four = map.get(PokerHand.FOUR_OF_A_KIND);
-//        final double threeUnion = map.get(PokerHand.THREE_OF_A_KIND);
-
-//        decrement(map, PokerHand.THREE_OF_A_KIND, four+house);
         decrement(map, PokerHand.THREE_OF_A_KIND, house);
         decrement(map, PokerHand.TWO_PAIRS, house);
-//        decrement(map, PokerHand.ONE_PAIR, threeUnion + 2*map.get(PokerHand.TWO_PAIRS));
         decrement(map, PokerHand.ONE_PAIR, 2*map.get(PokerHand.TWO_PAIRS));
 
+
+
         double probSum = 0.0;
+        boolean surpassed = false;
         for(PokerHand h : PokerHand.values()){
-            System.out.println("Probability of "+h.getName()+":\t"+map.get(h));
-            probSum += map.get(h);
+            double p = map.get(h);
+
+            if(surpassed){
+                p = 0.0;
+            }
+
+            System.out.println("Probability of "+h.getName()+":\t"+p);
+            probSum += p;
+
+            if(Statistics.closeEnough(p-1.0)){
+                surpassed = true;
+            }
         }
         System.out.println("Total probability: "+probSum);
 

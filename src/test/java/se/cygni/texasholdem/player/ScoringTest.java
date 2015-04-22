@@ -45,9 +45,9 @@ public class ScoringTest {
 
         cards.add(new Card(Rank.ACE, Suit.DIAMONDS));
 
-//        cards.add(new Card(Rank.KING, Suit.DIAMONDS));
-//        cards.add(new Card(Rank.QUEEN, Suit.DIAMONDS));
-//        cards.add(new Card(Rank.JACK, Suit.DIAMONDS));
+        cards.add(new Card(Rank.KING, Suit.DIAMONDS));
+        cards.add(new Card(Rank.QUEEN, Suit.DIAMONDS));
+        cards.add(new Card(Rank.JACK, Suit.DIAMONDS));
 
         cards.add(new Card(Rank.TEN, Suit.DIAMONDS));
 
