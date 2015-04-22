@@ -21,6 +21,8 @@ public class Scoring {
         return a.getOrderValue() - b.getOrderValue();
     }
 
+//    private static double EQUALIZER = 0.5 / 0.4772;
+
     public static double chanceOfWinning(List<Card> myCardsAndCommunity, List<Card> community){
 //        final double myChance = Scoring.chanceToWin(playState.getMyCardsAndCommunityCards());
 //        final double theirChance = Scoring.chanceToWin(playState.getCommunityCards());
@@ -34,6 +36,7 @@ public class Scoring {
 //        System.out.println("Combined "+combinedChance);
 
         return combinedChance;
+//        return combinedChance * EQUALIZER;
     }
 
     public static double chanceToWin(List<Card> cards){
