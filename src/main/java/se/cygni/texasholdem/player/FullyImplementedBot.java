@@ -129,7 +129,7 @@ public class FullyImplementedBot implements Player {
     public Action actionRequired(ActionRequest request) {
 
         Action response = getBestAction(request);
-        log.info("I'm going to {} {}",
+        log.info("I'll {} {}",
                 response.getActionType(),
                 response.getAmount() > 0 ? "with " + response.getAmount() : "");
 
@@ -179,7 +179,7 @@ public class FullyImplementedBot implements Player {
                 }
             }
 
-            if(chance > 0.52 || (worth && chance > 0.49) ){
+            if(chance > 0.51 || (worth && chance > 0.48) ){
                 return stayInGame(actionsAvailable);
             } else {
                 return justFold(actionsAvailable);
@@ -199,7 +199,7 @@ public class FullyImplementedBot implements Player {
             if(chance < 0.50){
                 return justFold(actionsAvailable);
             }
-            if(chance < 0.60){
+            if(chance < 0.65){
                 return stayInGame(actionsAvailable);
             }
             return keepRaising(actionsAvailable);
@@ -210,7 +210,7 @@ public class FullyImplementedBot implements Player {
             if(chance < 0.44){
                 return justFold(actionsAvailable);
             }
-            if(chance < 0.59){
+            if(chance < 0.58){
                 return stayInGame(actionsAvailable);
             }
             return keepRaising(actionsAvailable);
@@ -219,7 +219,7 @@ public class FullyImplementedBot implements Player {
         if(chance < 0.48){
             return justFold(actionsAvailable);
         }
-        if(chance < 0.60){
+        if(chance < 0.62){
             return stayInGame(actionsAvailable);
         }
         return keepRaising(actionsAvailable);
