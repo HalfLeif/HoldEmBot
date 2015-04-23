@@ -16,7 +16,7 @@ public class Simulate {
     private List<Card> playerB;
     private List<Card> community;
 
-    private final static double LIMIT = 0.44;
+    private final static double LIMIT = 0.74;
     private static final int FIELDS = 50;
 
     private int round = 0;
@@ -75,7 +75,8 @@ public class Simulate {
                     pc.addStats(false, estA);
                     pc.addStats(true, estB);
                 } else {
-                    // DO nothing
+                    pc.tie(estA);
+                    pc.tie(estB);
                 }
             }
             avgA /= 3;
@@ -187,13 +188,28 @@ public class Simulate {
         private int falseNegative = 0;
         private int truePositive = 0;
         private int trueNegative = 0;
+        private int expWinButGotTie = 0;
+        private int expLossButGotTie = 0;
 
         private void summarize(){
+//            expLossButGotTie /= 2;
+//            expWinButGotTie /= 2;
+
             System.out.println("False pos: "+falsePositive);
             System.out.println("True pos: "+truePositive);
             System.out.println("False neg: "+falseNegative);
             System.out.println("True neg: "+trueNegative);
+            System.out.println("Tie exp win: "+expWinButGotTie);
+            System.out.println("Tie exp loss: "+expLossButGotTie);
             System.out.println(" ");
+        }
+
+        private void tie(double exp){
+            if(exp >= LIMIT){
+                expWinButGotTie++;
+            } else {
+                expLossButGotTie++;
+            }
         }
 
         private void addStats(boolean won, double exp){

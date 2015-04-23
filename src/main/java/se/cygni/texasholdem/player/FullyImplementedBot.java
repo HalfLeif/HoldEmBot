@@ -238,14 +238,14 @@ public class FullyImplementedBot implements Player {
             return available.callAction;
         }
         if(chance > 0.74){
+            log.info("Chances are high!");
             return available.allInAction;
         }
         if(available.checkAction != null){
             return available.checkAction;
         }
-//        log.info("keepRaising: THIS SHOULD NEVER HAPPEN?");
-//        return available.foldAction;
         // It can happen when out of resources it seems. If out of resources, fold would lose the game anyway.
+        log.info("keepRaising: Forced to ALL IN in order to stay in there");
         return available.allInAction;
 
     }
@@ -263,6 +263,7 @@ public class FullyImplementedBot implements Player {
             return available.callAction;
         }
         // Can happen when out of resources
+        log.info("stayInGame: Forced to ALL IN in order to stay in there");
         return available.allInAction;
     }
 
