@@ -170,9 +170,6 @@ public class FullyImplementedBot implements Player {
         if(currentState.equals(PlayState.PRE_FLOP)){
             List<Card> cards = playState.getMyCards();
             final boolean worth = worthKeeping(cards.get(0), cards.get(1));
-//            if(worth && this.pleasePrintStrategy){
-//                log.info("Apparently worth keeping? Chance: "+chance);
-//            }
 
             if(onlyTwoPlayers){
                 if(worth || chance > 0.49){
@@ -188,8 +185,27 @@ public class FullyImplementedBot implements Player {
                 return justFold(actionsAvailable);
             }
         }
+        if(currentState.equals(PlayState.RIVER)){
+            if(onlyTwoPlayers){
+                if(chance < 0.49){
+                    return justFold(actionsAvailable);
+                }
+                if(chance < 0.59){
+                    return stayInGame(actionsAvailable);
+                }
+                return keepRaising(actionsAvailable);
+            }
 
-        // After PRE_FLOP
+            if(chance < 0.50){
+                return justFold(actionsAvailable);
+            }
+            if(chance < 0.60){
+                return stayInGame(actionsAvailable);
+            }
+            return keepRaising(actionsAvailable);
+        }
+
+        // FLOP or TURN
         if(onlyTwoPlayers){
             if(chance < 0.44){
                 return justFold(actionsAvailable);
