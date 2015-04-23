@@ -243,8 +243,10 @@ public class FullyImplementedBot implements Player {
         if(available.checkAction != null){
             return available.checkAction;
         }
-        log.info("keepRaising: THIS SHOULD NEVER HAPPEN?");
-        return available.foldAction;
+//        log.info("keepRaising: THIS SHOULD NEVER HAPPEN?");
+//        return available.foldAction;
+        // It can happen when out of resources it seems. If out of resources, fold would lose the game anyway.
+        return available.allInAction;
 
     }
 

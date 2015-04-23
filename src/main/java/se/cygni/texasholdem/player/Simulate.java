@@ -16,7 +16,7 @@ public class Simulate {
     private List<Card> playerB;
     private List<Card> community;
 
-    private final static double LIMIT = 0.49;
+    private final static double LIMIT = 0.44;
     private static final int FIELDS = 50;
 
     private int round = 0;
@@ -50,6 +50,7 @@ public class Simulate {
 
     public void summary(){
         System.out.println("Played for "+round+" rounds.");
+        System.out.println("LIMIT: "+LIMIT);
 
         double aWon = 0;
         double bWon = 0;
