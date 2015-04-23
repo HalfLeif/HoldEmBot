@@ -37,7 +37,7 @@ public class Simulate {
     }
 
     public static void main(String[] args){
-        runSimulation(10000);
+        runSimulation(100000);
     }
 
     public static void runSimulation(int rounds){

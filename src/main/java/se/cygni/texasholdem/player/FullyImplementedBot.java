@@ -154,6 +154,7 @@ public class FullyImplementedBot implements Player {
 
         if(this.pleasePrintStrategy){
             log.info("# "+currentState.getName());
+            log.info("Estimated chance: "+chance);
         }
 
         if(someoneWentAllIn){
@@ -216,6 +217,7 @@ public class FullyImplementedBot implements Player {
                 s.append(c.toShortString()+", ");
             }
             log.info("Quick exit, got: "+s);
+            this.pleasePrintStrategy = false;
         }
 
         if(available.checkAction != null){

@@ -21,22 +21,13 @@ public class Scoring {
         return a.getOrderValue() - b.getOrderValue();
     }
 
-//    private static double EQUALIZER = 0.5 / 0.4772;
-
     public static double chanceOfWinning(List<Card> myCardsAndCommunity, List<Card> community){
-//        final double myChance = Scoring.chanceToWin(playState.getMyCardsAndCommunityCards());
-//        final double theirChance = Scoring.chanceToWin(playState.getCommunityCards());
         final double myChance = Scoring.chanceToWin(myCardsAndCommunity);
         final double theirChance = Scoring.chanceToWin(community);
 
-//        System.out.println("My chance of winning "+myChance);
-//        System.out.println("Their chance of winning "+theirChance);
-
         final double combinedChance = myChance / (myChance + theirChance);
-//        System.out.println("Combined "+combinedChance);
 
         return combinedChance;
-//        return combinedChance * EQUALIZER;
     }
 
     public static double chanceToWin(List<Card> cards){
@@ -93,16 +84,16 @@ public class Scoring {
         }
 //        System.out.println("Total probability: "+probSum+"\n");
 
-        double TEST = 0.0;
+//        double TEST = 0.0;
         // Normalize the distribution (since is approximation)
         for(PokerHand h : PokerHand.values()){
 //            System.out.println(map.get(h));
             final double p = map.get(h) / probSum;
 //            System.out.println(p);
-            TEST += p;
+//            TEST += p;
             map.put(h, p);
 
-//            System.out.println("After, "+h.getName()+":\t"+map.get(h));
+            System.out.println("After, "+h.getName()+":\t"+map.get(h));
         }
 //        System.out.println("Sum after normalization: "+TEST);
 
