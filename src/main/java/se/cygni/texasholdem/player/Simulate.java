@@ -27,11 +27,11 @@ public class Simulate {
     private final PositiveCounter[] positiveCounters;
 
     private Simulate(int rounds){
-        estimatesA = new double[3][rounds];
-        estimatesB = new double[3][rounds];
+        estimatesA = new double[4][rounds];
+        estimatesB = new double[4][rounds];
         playerAWon = new int[rounds];
-        positiveCounters = new PositiveCounter[3];
-        for(int ix=0; ix<3; ++ix){
+        positiveCounters = new PositiveCounter[4];
+        for(int ix=0; ix<4; ++ix){
             positiveCounters[ix] = new PositiveCounter();
         }
     }
@@ -61,7 +61,7 @@ public class Simulate {
         for(int ix=0; ix<round; ++ix){
             double avgA = 0.0;
             double avgB = 0.0;
-            for(int jx = 0; jx < 3; ++jx){
+            for(int jx = 0; jx < 4; ++jx){
                 final double estA = estimatesA[jx][ix];
                 final double estB = estimatesB[jx][ix];
                 final PositiveCounter pc = this.positiveCounters[jx];
@@ -79,8 +79,8 @@ public class Simulate {
                     pc.tie(estB);
                 }
             }
-            avgA /= 3;
-            avgB /= 3;
+            avgA /= 4;
+            avgB /= 4;
             totalA += avgA;
             totalB += avgB;
 
@@ -101,11 +101,11 @@ public class Simulate {
         System.out.println("Tied  "+ties/round);
         System.out.println(" ");
 
-        for(int ix=0; ix<3; ++ix){
+        for(int ix=0; ix<4; ++ix){
             this.positiveCounters[ix].summarize();
         }
 
-        for(int ix=0; ix<3; ++ix){
+        for(int ix=0; ix<4; ++ix){
             new Histogram(estimatesA[ix]).summarize();
         }
     }
@@ -124,20 +124,15 @@ public class Simulate {
         estimateWinChance(0);
 
         for(int ix = 0; ix<3; ++ix){
-            Card c = deck.getNextCard();
-            playerA.add(c);
-            playerB.add(c);
-            community.add(c);
+            dealOneCardToCommunity(deck);
         }
         estimateWinChance(1);
 
-        {
-            Card c = deck.getNextCard();
-            playerA.add(c);
-            playerB.add(c);
-            community.add(c);
-        }
+        dealOneCardToCommunity(deck);
         estimateWinChance(2);
+
+        dealOneCardToCommunity(deck);
+        estimateWinChance(3);
 
         PokerHandUtil utilA = new PokerHandUtil(playerA);
         PokerHandUtil utilB = new PokerHandUtil(playerB);
@@ -145,6 +140,13 @@ public class Simulate {
         playerAWon[round] = Scoring.compareHands(utilA.getBestHand().getPokerHand(), utilB.getBestHand().getPokerHand());
 
         ++round;
+    }
+
+    private void dealOneCardToCommunity(Deck deck){
+        Card c = deck.getNextCard();
+        playerA.add(c);
+        playerB.add(c);
+        community.add(c);
     }
 
     private void estimateWinChance(int part){
@@ -192,8 +194,6 @@ public class Simulate {
         private int expLossButGotTie = 0;
 
         private void summarize(){
-//            expLossButGotTie /= 2;
-//            expWinButGotTie /= 2;
 
             System.out.println("False pos: "+falsePositive);
             System.out.println("True pos: "+truePositive);

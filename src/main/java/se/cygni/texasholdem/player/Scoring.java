@@ -93,7 +93,7 @@ public class Scoring {
 //            TEST += p;
             map.put(h, p);
 
-            System.out.println("After, "+h.getName()+":\t"+map.get(h));
+//            System.out.println("After, "+h.getName()+":\t"+map.get(h));
         }
 //        System.out.println("Sum after normalization: "+TEST);
 
