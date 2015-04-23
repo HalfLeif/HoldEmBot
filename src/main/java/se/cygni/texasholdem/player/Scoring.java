@@ -21,16 +21,28 @@ public class Scoring {
         return a.getOrderValue() - b.getOrderValue();
     }
 
+    /**
+     * Calculates and compares the chance of winning for user's hand and
+     * the chance for all other players' hands, given the known cards.
+     *
+     * @param myCardsAndCommunity
+     * @param community
+     * @return Probability of winning in this specific round.
+     */
     public static double chanceOfWinning(List<Card> myCardsAndCommunity, List<Card> community){
-        final double myChance = Scoring.chanceToWin(myCardsAndCommunity);
-        final double theirChance = Scoring.chanceToWin(community);
+        final double myChance = Scoring.chanceToWinAgainstUniform(myCardsAndCommunity);
+        final double theirChance = Scoring.chanceToWinAgainstUniform(community);
 
         final double combinedChance = myChance / (myChance + theirChance);
 
         return combinedChance;
     }
 
-    public static double chanceToWin(List<Card> cards){
+    /**
+     * @param cards Total hand.
+     * @return Probability of winning against a uniform hand.
+     */
+    public static double chanceToWinAgainstUniform(List<Card> cards){
         Map<PokerHand, Double> probMap = probabilities(cards);
         Map<PokerHand, Double> scoreMap = Statistics.score();
 
@@ -41,6 +53,14 @@ public class Scoring {
         return prob;
     }
 
+    /**
+     * Calculates a probability distribution over all PokerHands:
+     * The chance of getting this PokerHand in SHOWDOWN.
+     * Also uses information about the unknown cards (that have not yet been turned).
+     *
+     * @param cards All known cards
+     * @return Probability distribution
+     */
     public static Map<PokerHand, Double> probabilities(List<Card> cards){
         final CardCounter counter = countCards(cards);
         final Map<PokerHand, Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
