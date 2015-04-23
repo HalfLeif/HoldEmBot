@@ -1,0 +1,189 @@
+
+Played for 100000 rounds.
+LIMIT: 0.74
+A expected 0.47638216093836877
+B expected 0.47672387671837263
+
+A won 0.28621
+B won 0.28706
+Tied  0.42673
+
+False pos: 0
+True pos: 0
+False neg: 57327
+True neg: 57327
+Tie exp win: 0
+Tie exp loss: 85346
+
+False pos: 0
+True pos: 360
+False neg: 56967
+True neg: 57327
+Tie exp win: 0
+Tie exp loss: 85346
+
+False pos: 7
+True pos: 1885
+False neg: 55442
+True neg: 57320
+Tie exp win: 26
+Tie exp loss: 85320
+
+
+Histogram:
+From 0.0: 	0
+From 0.02: 	0
+From 0.04: 	0
+From 0.06: 	0
+From 0.08: 	0
+From 0.1: 	0
+From 0.12: 	0
+From 0.14: 	0
+From 0.16: 	0
+From 0.18: 	0
+From 0.2: 	0
+From 0.22: 	0
+From 0.24: 	0
+From 0.26: 	0
+From 0.28: 	0
+From 0.3: 	0
+From 0.32: 	0
+From 0.34: 	0
+From 0.36: 	0
+From 0.38: 	0
+From 0.4: 	0
+From 0.42: 	0
+From 0.44: 	0
+From 0.46: 	38276
+From 0.48: 	34981
+From 0.5: 	18952
+From 0.52: 	1750
+From 0.54: 	0
+From 0.56: 	6041
+From 0.58: 	0
+From 0.6: 	0
+From 0.62: 	0
+From 0.64: 	0
+From 0.66: 	0
+From 0.68: 	0
+From 0.7: 	0
+From 0.72: 	0
+From 0.74: 	0
+From 0.76: 	0
+From 0.78: 	0
+From 0.8: 	0
+From 0.82: 	0
+From 0.84: 	0
+From 0.86: 	0
+From 0.88: 	0
+From 0.9: 	0
+From 0.92: 	0
+From 0.94: 	0
+From 0.96: 	0
+From 0.98: 	0
+
+Histogram:
+From 0.0: 	0
+From 0.02: 	0
+From 0.04: 	0
+From 0.06: 	0
+From 0.08: 	0
+From 0.1: 	0
+From 0.12: 	0
+From 0.14: 	0
+From 0.16: 	0
+From 0.18: 	0
+From 0.2: 	0
+From 0.22: 	0
+From 0.24: 	0
+From 0.26: 	0
+From 0.28: 	0
+From 0.3: 	160
+From 0.32: 	1085
+From 0.34: 	3790
+From 0.36: 	9413
+From 0.38: 	10385
+From 0.4: 	8612
+From 0.42: 	3832
+From 0.44: 	8826
+From 0.46: 	5517
+From 0.48: 	2898
+From 0.5: 	4255
+From 0.52: 	8123
+From 0.54: 	5343
+From 0.56: 	14306
+From 0.58: 	8254
+From 0.6: 	792
+From 0.62: 	2237
+From 0.64: 	1024
+From 0.66: 	295
+From 0.68: 	139
+From 0.7: 	141
+From 0.72: 	394
+From 0.74: 	179
+From 0.76: 	0
+From 0.78: 	0
+From 0.8: 	0
+From 0.82: 	0
+From 0.84: 	0
+From 0.86: 	0
+From 0.88: 	0
+From 0.9: 	0
+From 0.92: 	0
+From 0.94: 	0
+From 0.96: 	0
+From 0.98: 	0
+
+Histogram:
+From 0.0: 	0
+From 0.02: 	0
+From 0.04: 	0
+From 0.06: 	0
+From 0.08: 	0
+From 0.1: 	0
+From 0.12: 	0
+From 0.14: 	0
+From 0.16: 	23
+From 0.18: 	393
+From 0.2: 	1389
+From 0.22: 	4038
+From 0.24: 	5800
+From 0.26: 	4874
+From 0.28: 	15
+From 0.3: 	451
+From 0.32: 	998
+From 0.34: 	1666
+From 0.36: 	3533
+From 0.38: 	14518
+From 0.4: 	2410
+From 0.42: 	3745
+From 0.44: 	3267
+From 0.46: 	4072
+From 0.48: 	5712
+From 0.5: 	4969
+From 0.52: 	8458
+From 0.54: 	16182
+From 0.56: 	2764
+From 0.58: 	757
+From 0.6: 	752
+From 0.62: 	2228
+From 0.64: 	2409
+From 0.66: 	1319
+From 0.68: 	1341
+From 0.7: 	325
+From 0.72: 	605
+From 0.74: 	651
+From 0.76: 	336
+From 0.78: 	0
+From 0.8: 	0
+From 0.82: 	0
+From 0.84: 	0
+From 0.86: 	0
+From 0.88: 	0
+From 0.9: 	0
+From 0.92: 	0
+From 0.94: 	0
+From 0.96: 	0
+From 0.98: 	0
+
+Process finished with exit code 0
