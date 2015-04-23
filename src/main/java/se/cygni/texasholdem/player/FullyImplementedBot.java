@@ -70,7 +70,7 @@ public class FullyImplementedBot implements Player {
 
     public void playATrainingGame() throws Exception {
         playerClient.connect();
-        playerClient.registerForPlay(Room.TRAINING);
+        playerClient.registerForPlay(Room.TOURNAMENT);
     }
 
     /**
