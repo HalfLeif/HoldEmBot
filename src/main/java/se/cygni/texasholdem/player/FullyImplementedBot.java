@@ -70,7 +70,7 @@ public class FullyImplementedBot implements Player {
 
     public void playATrainingGame() throws Exception {
         playerClient.connect();
-        playerClient.registerForPlay(Room.TOURNAMENT);
+        playerClient.registerForPlay(Room.TRAINING);
     }
 
     /**
@@ -216,7 +216,7 @@ public class FullyImplementedBot implements Player {
             return keepRaising(actionsAvailable);
         }
 
-        if(chance < 0.48){
+        if(chance < 0.485){
             return justFold(actionsAvailable);
         }
         if(chance < 0.62){
