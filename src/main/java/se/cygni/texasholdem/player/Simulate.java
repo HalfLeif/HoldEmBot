@@ -48,59 +48,6 @@ public class Simulate {
         s.summary();
     }
 
-    /**
-     Played for 10000 rounds.
-     A expected 0.47505816093448566
-     B expected 0.476388490642104
-
-     A won 0.2857
-     B won 0.2881
-     Tied  0.4262
-
-     False pos: 860
-     True pos: 4880
-     False neg: 858
-     True neg: 4878
-
-
-     Histogram:
-     From 0.0: 0
-     From 0.1: 0
-     From 0.2: 0
-     From 0.3: 0
-     From 0.4: 7294
-     From 0.5: 2706
-     From 0.6: 0
-     From 0.7: 0
-     From 0.8: 0
-     From 0.9: 0
-
-     Histogram:
-     From 0.0: 0
-     From 0.1: 0
-     From 0.2: 0
-     From 0.3: 2559
-     From 0.4: 3028
-     From 0.5: 3880
-     From 0.6: 449
-     From 0.7: 84
-     From 0.8: 0
-     From 0.9: 0
-
-     Histogram:
-     From 0.0: 0
-     From 0.1: 37
-     From 0.2: 1671
-     From 0.3: 2172
-     From 0.4: 1939
-     From 0.5: 3194
-     From 0.6: 777
-     From 0.7: 210
-     From 0.8: 0
-     From 0.9: 0
-
-     Process finished with exit code 0
-     */
     public void summary(){
         System.out.println("Played for "+round+" rounds.");
 
@@ -123,13 +70,11 @@ public class Simulate {
                 if(playerAWon[ix] > 0){
                     pc.addStats(true, estA);
                     pc.addStats(false, estB);
-                    aWon++;
                 } else if(playerAWon[ix] < 0) {
                     pc.addStats(false, estA);
                     pc.addStats(true, estB);
-                    bWon++;
                 } else {
-                    ++ties;
+                    // DO nothing
                 }
             }
             avgA /= 3;
@@ -137,6 +82,13 @@ public class Simulate {
             totalA += avgA;
             totalB += avgB;
 
+            if(playerAWon[ix] > 0){
+                aWon++;
+            } else if(playerAWon[ix] < 0) {
+                bWon++;
+            } else {
+                ++ties;
+            }
 
         }
         System.out.println("A expected "+totalA/round);
@@ -149,30 +101,12 @@ public class Simulate {
 
         for(int ix=0; ix<3; ++ix){
             this.positiveCounters[ix].summarize();
-            System.out.println(" ");
         }
 
         for(int ix=0; ix<3; ++ix){
             new Histogram(estimatesA[ix]).summarize();
-//            System.out.println(" ");
         }
     }
-
-//    private void addStats(boolean won, double exp){
-//        if(exp >= LIMIT){
-//            if(won){
-//                truePositive++;
-//            } else {
-//                falsePositive++;
-//            }
-//        } else {
-//            if(won){
-//                falseNegative++;
-//            } else {
-//                trueNegative++;
-//            }
-//        }
-//    }
 
     public void oneRound(){
         Deck deck = Deck.getShuffledDeck();
@@ -258,6 +192,7 @@ public class Simulate {
             System.out.println("True pos: "+truePositive);
             System.out.println("False neg: "+falseNegative);
             System.out.println("True neg: "+trueNegative);
+            System.out.println(" ");
         }
 
         private void addStats(boolean won, double exp){
