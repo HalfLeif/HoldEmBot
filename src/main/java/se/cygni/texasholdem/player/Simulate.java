@@ -16,22 +16,24 @@ public class Simulate {
     private List<Card> playerB;
     private List<Card> community;
 
+    private final static double LIMIT = 0.49;
+    private static final int FIELDS = 50;
+
     private int round = 0;
-
-    private int falsePositive = 0;
-    private int falseNegative = 0;
-    private int truePositive = 0;
-    private int trueNegative = 0;
-
 
     private final double[][] estimatesA;
     private final double[][] estimatesB;
     private final int[] playerAWon;
+    private final PositiveCounter[] positiveCounters;
 
     private Simulate(int rounds){
         estimatesA = new double[3][rounds];
         estimatesB = new double[3][rounds];
         playerAWon = new int[rounds];
+        positiveCounters = new PositiveCounter[3];
+        for(int ix=0; ix<3; ++ix){
+            positiveCounters[ix] = new PositiveCounter();
+        }
     }
 
     public static void main(String[] args){
@@ -109,37 +111,33 @@ public class Simulate {
         double totalA = 0.0;
         double totalB = 0.0;
         for(int ix=0; ix<round; ++ix){
-//            StringBuilder a = new StringBuilder();
-//            StringBuilder b = new StringBuilder();
             double avgA = 0.0;
             double avgB = 0.0;
             for(int jx = 0; jx < 3; ++jx){
-                avgA += estimatesA[jx][ix];
-                avgB += estimatesB[jx][ix];
-//                a.append(estimatesA[jx][ix]+", ");
-//                b.append(estimatesB[jx][ix] + ", ");
+                final double estA = estimatesA[jx][ix];
+                final double estB = estimatesB[jx][ix];
+                final PositiveCounter pc = this.positiveCounters[jx];
+                avgA += estA;
+                avgB += estB;
+
+                if(playerAWon[ix] > 0){
+                    pc.addStats(true, estA);
+                    pc.addStats(false, estB);
+                    aWon++;
+                } else if(playerAWon[ix] < 0) {
+                    pc.addStats(false, estA);
+                    pc.addStats(true, estB);
+                    bWon++;
+                } else {
+                    ++ties;
+                }
             }
             avgA /= 3;
             avgB /= 3;
             totalA += avgA;
             totalB += avgB;
-//            System.out.println("A expected "+a);
-//            System.out.println("B expected "+b);
 
-            if(playerAWon[ix] > 0){
-//                System.out.println("A won this time.");
-                addStats(true, avgA);
-                addStats(false, avgB);
-                aWon++;
-            } else if(playerAWon[ix] < 0) {
-                addStats(false, avgA);
-                addStats(true, avgB);
-//                System.out.println("B won this time.");
-                bWon++;
-            } else {
-//                System.out.println("Tied.");
-                ++ties;
-            }
+
         }
         System.out.println("A expected "+totalA/round);
         System.out.println("B expected "+totalB/round);
@@ -148,32 +146,33 @@ public class Simulate {
         System.out.println("B won "+bWon/round);
         System.out.println("Tied  "+ties/round);
         System.out.println(" ");
-        System.out.println("False pos: "+falsePositive);
-        System.out.println("True pos: "+truePositive);
-        System.out.println("False neg: "+falseNegative);
-        System.out.println("True neg: "+trueNegative);
 
-        System.out.println(" ");
-        new Histogram(estimatesA[0]).summarize();
-        new Histogram(estimatesA[1]).summarize();
-        new Histogram(estimatesA[2]).summarize();
-    }
+        for(int ix=0; ix<3; ++ix){
+            this.positiveCounters[ix].summarize();
+            System.out.println(" ");
+        }
 
-    private void addStats(boolean won, double exp){
-        if(exp >= 0.5){
-            if(won){
-                truePositive++;
-            } else {
-                falsePositive++;
-            }
-        } else {
-            if(won){
-                falseNegative++;
-            } else {
-                trueNegative++;
-            }
+        for(int ix=0; ix<3; ++ix){
+            new Histogram(estimatesA[ix]).summarize();
+//            System.out.println(" ");
         }
     }
+
+//    private void addStats(boolean won, double exp){
+//        if(exp >= LIMIT){
+//            if(won){
+//                truePositive++;
+//            } else {
+//                falsePositive++;
+//            }
+//        } else {
+//            if(won){
+//                falseNegative++;
+//            } else {
+//                trueNegative++;
+//            }
+//        }
+//    }
 
     public void oneRound(){
         Deck deck = Deck.getShuffledDeck();
@@ -218,7 +217,6 @@ public class Simulate {
     }
 
     public static class Histogram{
-        private static final int FIELDS = 50;
 
         private final int[] intervals = new int[FIELDS];
         private final int total;
@@ -245,6 +243,36 @@ public class Simulate {
             for(int ix = 0; ix<FIELDS; ++ix){
                 double lowBound = ix/ (double) FIELDS;
                 System.out.println("From "+lowBound+": \t"+intervals[ix]);
+            }
+        }
+    }
+
+    private static class PositiveCounter{
+        private int falsePositive = 0;
+        private int falseNegative = 0;
+        private int truePositive = 0;
+        private int trueNegative = 0;
+
+        private void summarize(){
+            System.out.println("False pos: "+falsePositive);
+            System.out.println("True pos: "+truePositive);
+            System.out.println("False neg: "+falseNegative);
+            System.out.println("True neg: "+trueNegative);
+        }
+
+        private void addStats(boolean won, double exp){
+            if(exp >= LIMIT){
+                if(won){
+                    truePositive++;
+                } else {
+                    falsePositive++;
+                }
+            } else {
+                if(won){
+                    falseNegative++;
+                } else {
+                    trueNegative++;
+                }
             }
         }
     }

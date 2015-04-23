@@ -181,7 +181,7 @@ public class FullyImplementedBot implements Player {
                 }
             }
 
-            if(chance > 0.52 || (worth && chance > 0.480) ){
+            if(chance > 0.52 || (worth && chance > 0.49) ){
                 return stayInGame(actionsAvailable);
             } else {
                 return justFold(actionsAvailable);
