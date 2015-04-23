@@ -36,11 +36,15 @@ public class Statistics {
     }
 
     /**
+     * Setting:
+     * a bag of A + B items.
+     * The user will draw exactly N cards.
+     * What is the probability that W cards are of type A?
      *
-     * @param wants
-     * @param draws
-     * @param gems
-     * @param rocks
+     * @param wants W
+     * @param draws N
+     * @param gems A
+     * @param rocks B
      * @return Probability of getting exactly so many gems when drawing
      */
     public static double drawExactly(final double wants, final double draws, final double gems, final double rocks){
@@ -52,6 +56,11 @@ public class Statistics {
         return combinations(gems, wants) * (combinations(rocks, draws-wants) / total);
     }
 
+    /**
+     * Setting same as in @see Statistics#drawExactly()
+     *
+     * Draw at least so many instead of exactly.
+     */
     public static double drawAtLeast(final double wants, final double draws, final double gems, final double rocks){
         double prob = 0.0;
         for(double ix=wants; ix <= draws; ++ix){
@@ -88,31 +97,31 @@ public class Statistics {
             return -1.0;
         }
     }
+//
+//    /**
+//     * @return Probability-map of getting such a hand. Is a PDF.
+//     */
+//    public static Map<PokerHand,Double> priors(){
+//        Map<PokerHand,Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
+//
+//        //map.put(PokerHand.ROYAL_FLUSH, 1.0/(26.0*51*25*49*48*45));
+//        map.put(PokerHand.ROYAL_FLUSH, 2.85e-10);
+//        map.put(PokerHand.STRAIGHT_FLUSH, 1124.0/1e6);
+//        map.put(PokerHand.FOUR_OF_A_KIND, 4071.0/1e6);
+//        map.put(PokerHand.FULL_HOUSE, 56593.0/1e6);
+//        map.put(PokerHand.FLUSH, 51874.0/1e6);
+//        map.put(PokerHand.STRAIGHT, 62701.0/1e6);
+//        map.put(PokerHand.THREE_OF_A_KIND, 54959.0/1e6);
+//        map.put(PokerHand.TWO_PAIRS, 236960.0/1e6);
+//        map.put(PokerHand.ONE_PAIR, 391068.0/1e6);
+//        map.put(PokerHand.HIGH_HAND, 140650.0/1e6);
+//        map.put(PokerHand.NOTHING, 0.0);
+//
+//        return map;
+//    }
 
     /**
-     * @return Probability-map of getting such a hand. Is a PDF.
-     */
-    public static Map<PokerHand,Double> priors(){
-        Map<PokerHand,Double> map = new EnumMap<PokerHand, Double>(PokerHand.class);
-
-        //map.put(PokerHand.ROYAL_FLUSH, 1.0/(26.0*51*25*49*48*45));
-        map.put(PokerHand.ROYAL_FLUSH, 2.85e-10);
-        map.put(PokerHand.STRAIGHT_FLUSH, 1124.0/1e6);
-        map.put(PokerHand.FOUR_OF_A_KIND, 4071.0/1e6);
-        map.put(PokerHand.FULL_HOUSE, 56593.0/1e6);
-        map.put(PokerHand.FLUSH, 51874.0/1e6);
-        map.put(PokerHand.STRAIGHT, 62701.0/1e6);
-        map.put(PokerHand.THREE_OF_A_KIND, 54959.0/1e6);
-        map.put(PokerHand.TWO_PAIRS, 236960.0/1e6);
-        map.put(PokerHand.ONE_PAIR, 391068.0/1e6);
-        map.put(PokerHand.HIGH_HAND, 140650.0/1e6);
-        map.put(PokerHand.NOTHING, 0.0);
-
-        return map;
-    }
-
-    /**
-     *
+     * This data is built from simulation from @see Statistics#run()
      * @return Probability-map of beating a uniform hand.
      */
     public static Map<PokerHand,Double> score(){
